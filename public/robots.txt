@@ -1,0 +1,5 @@
+# Fallback robots.txt. The build script replaces this in dist/ and adds
+# a Sitemap line once VITE_SITE_URL is set.
+User-agent: *
+Allow: /
+Disallow: /admin
