@@ -23,6 +23,11 @@ for (const file of ['.env', '.env.local', '.env.production', '.env.production.lo
   }
 }
 const siteUrl = (process.env.VITE_SITE_URL || '').replace(/\/$/, '');
+// Optional: Google Search Console "HTML tag" verification code (just the content="..." value).
+const googleVerification = (process.env.VITE_GOOGLE_SITE_VERIFICATION || '').trim();
+const verificationTag = /^[A-Za-z0-9_-]{10,100}$/.test(googleVerification)
+  ? `\n    <meta name="google-site-verification" content="${googleVerification}" />`
+  : '';
 
 const STATIC_ROUTES = [
   ['/', '1.0', 'weekly'],
@@ -95,7 +100,7 @@ for (const r of routes) {
   // Mark pre-rendered head tags so the browser app can replace them with live ones.
   const head = split.head.replace(/<(title|meta|link)\b/g, '<$1 data-pr=""');
   const page = template
-    .replace(/<!--seo-start-->[\s\S]*?<!--seo-end-->/, `${head}\n    <meta property="og:site_name" content="${esc(settings.academy_name)}" />`)
+    .replace(/<!--seo-start-->[\s\S]*?<!--seo-end-->/, `${head}\n    <meta property="og:site_name" content="${esc(settings.academy_name)}" />${verificationTag}`)
     .replace(
       '<div id="root"></div>',
       `<div id="root">${body}</div>\n    <script type="application/json" id="skca-data">${jsonForHtml(data)}</script>`,
