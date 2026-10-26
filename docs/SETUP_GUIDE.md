@@ -224,3 +224,5 @@ git push               # Cloudflare redeploys automatically
 ```
 
 Database changes: add a **new** file in `supabase/migrations/` (never edit old ones once applied) and run it in the SQL editor.
+
+**FAQ or content changes made in Supabase** (for example `supabase/SEO_KEYWORDS_FAQ_2.sql`) show in the browser straight away, but the pre-rendered pages that Google and AI tools read only update on the next Cloudflare build. After running such SQL, retry the latest deployment in Cloudflare or push any change to `main`.
