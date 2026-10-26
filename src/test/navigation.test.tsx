@@ -25,7 +25,7 @@ function renderAt(path: string) {
 describe('Public website', () => {
   it('renders the hero with the required copy and buttons', () => {
     renderAt('/');
-    expect(screen.getByRole('heading', { level: 1, name: 'BUILD YOUR GAME. OWN YOUR FUTURE.' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: /cricket academy in swat, mingora.*BUILD YOUR GAME. OWN YOUR FUTURE./i })).toBeInTheDocument();
     expect(
       screen.getByText('Develop your cricket skills, discipline, confidence, and teamwork with Swat Kings Cricket Academy.'),
     ).toBeInTheDocument();
@@ -40,14 +40,14 @@ describe('Public website', () => {
   });
 
   const expectedHeadings: Record<string, RegExp> = {
-    '/about': /about the academy/i,
+    '/about': /about our cricket academy in swat/i,
     '/programmes': /coaching programmes/i,
-    '/coaches': /our coaches/i,
+    '/coaches': /our cricket coaches/i,
     '/teams': /players and teams/i,
     '/fixtures': /fixtures and results/i,
-    '/news': /news and announcements/i,
+    '/news': /cricket trials and academy news/i,
     '/gallery': /gallery/i,
-    '/contact': /contact us/i,
+    '/contact': /contact our cricket academy in swat/i,
     '/register': /player registration/i,
     '/privacy': /privacy policy/i,
   };

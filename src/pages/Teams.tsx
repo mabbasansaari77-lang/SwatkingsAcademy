@@ -21,7 +21,7 @@ function PlayerCard({ player }: { player: PlayerProfile }) {
         {photo ? (
           <img
             src={photo}
-            alt={`Photo of ${player.display_name}`}
+            alt={`${player.display_name}, cricketer at Swat Kings Cricket Academy, Swat`}
             loading="lazy"
             width={80}
             height={80}
@@ -53,11 +53,11 @@ export default function Teams() {
   return (
     <>
       <Seo
-        title="Players and Teams"
-        description="Players and teams of Swat Kings Cricket Academy, a cricket club in Takhtaband, Mingora, Swat, with approved player profiles."
+        title="Cricket Players and Teams in Swat"
+        description="Cricket players and teams of Swat Kings Cricket Academy, a cricket club in Takhtaband, Mingora, Swat, with approved player profiles."
       />
       <PageHeader
-        page="teams" title="Players and teams" intro="Our squads and age groups." />
+        page="teams" title="Cricket players and teams" intro="Our squads and age groups at the cricket academy in Swat." />
       <Container className="py-12">
         <p className="mb-8 flex max-w-2xl items-start gap-2 text-sm text-charcoal-600">
           <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-navy-600" aria-hidden="true" />

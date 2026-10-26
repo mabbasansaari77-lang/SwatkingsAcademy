@@ -24,7 +24,7 @@ export function CoachCard({ coach, compact = false }: { coach: Coach; compact?: 
         {photo ? (
           <img
             src={photo}
-            alt={`Portrait of coach ${coach.name}`}
+            alt={`${coach.name}, cricket coach at Swat Kings Cricket Academy, Swat`}
             loading="lazy"
             decoding="async"
             width={480}

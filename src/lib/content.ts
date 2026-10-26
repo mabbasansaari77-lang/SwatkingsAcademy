@@ -2,7 +2,7 @@
 // These describe the academy's aims only — no invented facts or achievements.
 
 export const DEFAULT_INTRO =
-  'Swat Kings Cricket Academy is a cricket academy in Swat for players who want to learn the game properly and keep improving. We coach beginners taking their first steps, youth players building their technique, and developing cricketers preparing for competitive matches.';
+  'Swat Kings Cricket Academy is a cricket academy in Takhtaband, Mingora, Swat, Khyber Pakhtunkhwa, for players who want to learn the game properly and keep improving. We offer cricket coaching for kids taking their first steps, youth players building their technique, and adult cricketers preparing for competitive matches and trials.';
 
 export const PILLARS = [
   {

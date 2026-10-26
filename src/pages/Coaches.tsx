@@ -10,12 +10,12 @@ export default function Coaches() {
   return (
     <>
       <Seo
-        title="Coaches"
-        description="Meet the coaches providing junior and youth cricket coaching at Swat Kings Cricket Academy, Mingora, Swat."
+        title="Cricket Coaches in Swat"
+        description="Meet the cricket coaches at Swat Kings Cricket Academy, Mingora, Swat, providing cricket coaching for kids, youth and adult players."
       />
       <PageHeader
         page="coaches"
-        title="Our coaches"
+        title="Our cricket coaches"
         intro="The people who run our sessions. Qualifications are listed only after the academy has verified them."
       />
       <Container className="py-12">

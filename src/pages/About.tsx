@@ -1,8 +1,10 @@
 import { LinkButton } from '../components/ui/Button';
+import { JsonLd } from '../components/ui/JsonLd';
 import { PageHeader, Section } from '../components/ui/Section';
 import { Seo } from '../components/ui/Seo';
 import { DEFAULT_INTRO, PILLARS } from '../lib/content';
 import { paragraphs } from '../lib/format';
+import { organizationSchema } from '../lib/schema';
 import { useSettings } from '../lib/settings';
 
 export default function About() {
@@ -14,19 +16,20 @@ export default function About() {
   return (
     <>
       <Seo
-        title="About the Academy"
-        description="About Swat Kings Cricket Academy, a cricket academy and club in Takhtaband, Mingora, Swat offering junior and youth cricket coaching."
+        title="About Our Cricket Academy in Swat"
+        description="About Swat Kings Cricket Academy, a cricket academy and cricket club in Takhtaband, Mingora, Swat, Khyber Pakhtunkhwa, offering cricket coaching for kids, youth and adults."
       />
+      <JsonLd data={organizationSchema(settings)} />
       <PageHeader
         page="about"
-        title="About the academy"
-        intro="Who we are, what we believe in, and how we help cricketers in Swat develop their game."
+        title="About our cricket academy in Swat"
+        intro="Who we are, what we believe in, and how we help cricketers in Swat, Mingora and Khyber Pakhtunkhwa develop their game."
       />
 
       <Section tone="light">
         <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr]">
           <div>
-            <h2 className="text-4xl font-extrabold text-navy-900">Our story</h2>
+            <h2 className="text-4xl font-extrabold text-navy-900">Our story: a cricket academy in Takhtaband, Mingora</h2>
             <div className="prose-body mt-5 max-w-2xl text-lg text-charcoal-600">
               {(about.length ? about : [DEFAULT_INTRO]).map((p, i) => (
                 <p key={i}>{p}</p>
@@ -67,7 +70,7 @@ export default function About() {
       <Section tone="light">
         <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
           <p className="max-w-xl text-xl font-semibold text-charcoal-900">
-            Want to see how we train? Look through our programmes or complete a player registration.
+            Looking for a cricket academy near you in Swat? Look through our cricket coaching programmes or complete a player registration for admission and trials.
           </p>
           <div className="flex flex-wrap gap-3">
             <LinkButton to="/programmes" variant="outline-dark">

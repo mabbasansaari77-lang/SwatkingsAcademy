@@ -48,7 +48,7 @@ export default function PlayerDetail() {
     <article>
       <Seo
         title={`${player.display_name}${role ? ` — ${role}` : ''}`}
-        description={`${player.display_name}${role ? `, ${role.toLowerCase()}` : ''} at Swat Kings Cricket Academy. Player profile, photos and videos.`}
+        description={`${player.display_name}${role ? `, ${role.toLowerCase()}` : ''} at Swat Kings Cricket Academy, Mingora, Swat. Cricket player profile, photos and videos.`}
         image={photo}
       />
 
@@ -60,7 +60,7 @@ export default function PlayerDetail() {
           <div className="mt-6 flex flex-col gap-8 sm:flex-row sm:items-end">
             <div className="h-48 w-48 shrink-0 overflow-hidden rounded-2xl bg-navy-800 ring-4 ring-accent-500 sm:h-56 sm:w-56">
               {photo ? (
-                <img src={photo} alt={`Photo of ${player.display_name}`} width={448} height={448} className="h-full w-full object-cover" />
+                <img src={photo} alt={`${player.display_name}, cricketer at Swat Kings Cricket Academy, Swat`} width={448} height={448} className="h-full w-full object-cover" />
               ) : (
                 <span className="flex h-full w-full items-center justify-center font-display text-8xl font-black text-accent-300">
                   {player.display_name.charAt(0).toUpperCase()}

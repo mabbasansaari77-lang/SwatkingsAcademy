@@ -141,7 +141,7 @@ const link = (p) => (siteUrl ? `${siteUrl}${p}` : p);
 const lines = [
   `# ${settings.academy_name}`,
   '',
-  '> Cricket academy in Takhtaband, Mingora, Swat, Khyber Pakhtunkhwa, Pakistan, offering cricket coaching and training for juniors, youth and adults. Players can register online; approved players get a public profile with consent.',
+  '> Cricket academy in Takhtaband, Mingora, Swat, Khyber Pakhtunkhwa, Pakistan, offering cricket coaching and training for kids, youth and adults. Also known as Swat Kings. Players can register online for admission and trials; approved players get a public profile with consent.',
   '',
 ];
 const contact = [
