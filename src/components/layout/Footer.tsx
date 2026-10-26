@@ -31,7 +31,7 @@ export function Footer() {
         <div>
           <Logo light />
           <p className="mt-5 max-w-sm text-crease/85">
-            Cricket coaching in Swat for beginners, youth players and developing cricketers.
+            Cricket academy in Takhtaband, Mingora, Swat. Cricket coaching and training for juniors, youth and adults.
           </p>
           {socials.length > 0 && (
             <ul className="mt-6 flex gap-2" aria-label="Social media">
