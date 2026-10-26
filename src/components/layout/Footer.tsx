@@ -26,7 +26,8 @@ export function Footer() {
   const hasContact = settings.address || settings.phone || settings.email || wa;
 
   return (
-    <footer className="bg-navy-950 text-crease/90">
+    <footer className="tech-surface text-crease/90">
+      <div className="glow-line" aria-hidden="true" />
       <Container className="grid gap-12 py-16 md:grid-cols-[1.3fr_1fr_1fr]">
         <div>
           <Logo light />
@@ -41,7 +42,7 @@ export function Footer() {
                     href={href as string}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/20 text-crease hover:border-accent-500 hover:text-accent-300"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/20 text-crease transition-[border-color,color,box-shadow] hover:border-neon hover:text-accent-300 hover:shadow-[0_0_18px_-4px_rgb(56_189_248/0.9)]"
                   >
                     <Icon className="h-5 w-5" />
                     <span className="sr-only">{label} (opens in a new tab)</span>

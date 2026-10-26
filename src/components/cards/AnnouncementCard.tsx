@@ -7,7 +7,7 @@ import type { Announcement } from '../../lib/types';
 export function AnnouncementCard({ item }: { item: Announcement }) {
   const cover = mediaUrl(item.cover_image_url);
   return (
-    <article className="group relative flex h-full flex-col bg-white shadow-[0_1px_0_rgb(0_0_0/0.06)]">
+    <article className="card-tech group flex h-full flex-col">
       {cover && (
         <div className="aspect-[16/9] overflow-hidden bg-navy-900">
           <img
@@ -17,7 +17,7 @@ export function AnnouncementCard({ item }: { item: Announcement }) {
             decoding="async"
             width={640}
             height={360}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.06]"
           />
         </div>
       )}

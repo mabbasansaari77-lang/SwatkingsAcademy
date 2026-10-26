@@ -4,7 +4,7 @@ import { Seo } from '../components/ui/Seo';
 
 export default function NotFound() {
   return (
-    <section className="bg-navy-900 text-crease">
+    <section className="tech-surface text-crease">
       <Seo title="Page not found" description="The page you are looking for could not be found." noindex />
       <Container className="flex min-h-[60vh] flex-col items-start justify-center py-20">
         <svg viewBox="0 0 120 80" className="h-20 w-32 text-accent-500" aria-hidden="true">

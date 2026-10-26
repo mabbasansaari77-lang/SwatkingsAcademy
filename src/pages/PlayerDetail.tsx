@@ -52,7 +52,7 @@ export default function PlayerDetail() {
         image={photo}
       />
 
-      <header className="relative overflow-hidden bg-navy-900 text-crease">
+      <header className="tech-surface relative overflow-hidden text-crease">
         <Container className="relative py-10 sm:py-14">
           <Link to="/teams" className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-300 hover:text-crease">
             <ArrowLeft className="h-4 w-4" aria-hidden="true" /> All players and teams
