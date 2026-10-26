@@ -6,12 +6,14 @@ Built to run for **$0 a month** on free tiers: **Cloudflare Pages** (hosting) + 
 
 > New to this? Follow **[docs/SETUP_GUIDE.md](docs/SETUP_GUIDE.md)** step by step. It assumes no prior experience.
 
+**Live site:** <https://swatkingsacademy.swatkings.workers.dev> (set as `VITE_SITE_URL` in Cloudflare → Settings → Build → Variables and secrets).
+
 ---
 
 ## What's included
 
-**Public website (12 pages)**
-Home · About · Coaching Programmes · Coaches · Players & Teams · Fixtures & Results · News (list + article pages) · Gallery · Registration · Contact · Privacy Policy · custom 404 page
+**Public website (14 pages)**
+Home · About · Coaching Programmes · Coaches · Players & Teams · Fixtures & Results · News (list + article pages) · Gallery · Registration · Reviews · FAQ · Contact · Privacy Policy · custom 404 page
 
 **Trial registration**
 Validated form (age group instead of date of birth, guardian consent for under-19s, privacy acknowledgement), unique reference like `SK-2610-A1B2C3`, status starts as **Pending**, spam protection (honeypot + server-side validation + rate limiting).
