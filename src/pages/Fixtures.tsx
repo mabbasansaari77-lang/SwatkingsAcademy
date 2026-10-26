@@ -25,8 +25,8 @@ export default function Fixtures() {
   return (
     <>
       <Seo
-        title="Cricket Matches, Fixtures and Results in Swat"
-        description="Upcoming cricket matches and results for Swat Kings Cricket Academy teams in Swat, including tournaments, venues and scorecards."
+        title="Swat Cricket Matches, Tournaments and Results"
+        description="Swat cricket matches, tournaments and results for Swat Kings Cricket Academy teams in Mingora and across Khyber Pakhtunkhwa, with venues and scorecards."
       />
       {upcoming.data && fixtureSchemas(upcoming.data, settings.academy_name).length > 0 && (
         <JsonLd data={fixtureSchemas(upcoming.data, settings.academy_name)} />

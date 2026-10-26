@@ -303,7 +303,7 @@ function Faqs() {
     <Section
       id="faq"
       tone="chalk"
-      title="Cricket academy admission, fees and trials: your questions"
+      title="Cricket academy admission, fees and trials in Swat: your questions"
       action={
         state.data.length > 5 ? (
           <LinkButton to="/faq" variant="outline-dark" size="sm">

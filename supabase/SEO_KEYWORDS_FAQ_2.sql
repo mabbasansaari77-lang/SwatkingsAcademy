@@ -24,3 +24,17 @@ from (values
    11)
 ) as v(q, a, o)
 where not exists (select 1 from public.faqs f where lower(f.question) = lower(v.q));
+
+-- Second Ubersuggest pass (26 Oct 2026): "best age for cricket academy",
+-- "difference between cricket club and cricket academy", "Swat cricket club".
+insert into public.faqs (question, answer, is_published, sort_order)
+select q, a, true, o
+from (values
+  ('What is the best age to join a cricket academy?',
+   'Children can start in our under-10 group, and we also coach youth and adult players. Starting young helps players learn correct technique early, but it is never too late to join. Players under 19 need consent from a parent or guardian.',
+   12),
+  ('What is the difference between a cricket academy and a cricket club?',
+   'A cricket academy focuses on coaching and skill development, while a cricket club focuses on playing matches. Swat Kings is both: a cricket academy for training and a cricket club in Swat with its own teams and players.',
+   13)
+) as v(q, a, o)
+where not exists (select 1 from public.faqs f where lower(f.question) = lower(v.q));
