@@ -20,6 +20,7 @@ import {
   fetchPastFixtures,
   fetchPlayer,
   fetchProgrammes,
+  fetchReviews,
   fetchPublicCounts,
   fetchTeamsWithPlayers,
   fetchUpcomingFixtures,
@@ -79,7 +80,7 @@ export async function collect(): Promise<SiteData> {
     safe('home news', () => fetchAnnouncements(3)),
     safe('faqs', fetchFaqs),
   ]);
-  const [programmes, coaches, teams, upcoming, past, news, gallery] = await Promise.all([
+  const [programmes, coaches, teams, upcoming, past, news, gallery, reviews] = await Promise.all([
     safe('programmes', () => fetchProgrammes()),
     safe('coaches', () => fetchCoaches()),
     safe('teams', fetchTeamsWithPlayers),
@@ -87,6 +88,7 @@ export async function collect(): Promise<SiteData> {
     safe('results', () => fetchPastFixtures(50)),
     safe('news', () => fetchAnnouncements()),
     safe('gallery', () => fetchGallery()),
+    safe('reviews', fetchReviews),
   ]);
 
   const pages: Record<string, Data> = {
@@ -107,6 +109,7 @@ export async function collect(): Promise<SiteData> {
     '/news': { news },
     '/gallery': { gallery },
     '/faq': { faqs },
+    '/reviews': { reviews },
   };
 
   for (const a of news ?? []) {

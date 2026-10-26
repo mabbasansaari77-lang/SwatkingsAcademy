@@ -16,6 +16,7 @@ import PlayerDetail from './pages/PlayerDetail';
 import Privacy from './pages/Privacy';
 import Programmes from './pages/Programmes';
 import Register from './pages/Register';
+import Reviews from './pages/Reviews';
 import Teams from './pages/Teams';
 
 // The admin area is loaded only when someone visits /admin, keeping the
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="news/:slug" element={<NewsArticle />} />
         <Route path="gallery" element={<Gallery />} />
         <Route path="register" element={<Register />} />
+        <Route path="reviews" element={<Reviews />} />
         <Route path="contact" element={<Contact />} />
         <Route path="faq" element={<Faq />} />
         <Route path="privacy" element={<Privacy />} />
