@@ -308,6 +308,31 @@ export const RESOURCES: ResourceDef[] = [
     ],
   },
   {
+    path: 'faqs',
+    table: 'faqs',
+    title: 'FAQ',
+    singular: 'question',
+    intro:
+      'Questions and answers shown on the home page and /faq. Google and AI assistants often quote these directly, so answer clearly in 1–3 sentences and only with facts you can confirm. Ideas: What age can my child join? Where and when do you train? How do trials work? What should players bring? Do beginners need experience? How much are the fees?',
+    select: 'id, question, answer, is_published, sort_order',
+    order: [
+      { column: 'sort_order', ascending: true },
+      { column: 'created_at', ascending: true },
+    ],
+    searchColumn: 'question',
+    defaults: { is_published: true, sort_order: 0 },
+    fields: [
+      { name: 'question', label: 'Question', type: 'text', required: true, max: 200, hint: 'Write it the way a parent would ask it.' },
+      { name: 'answer', label: 'Answer', type: 'textarea', required: true, max: 2000, rows: 4, hint: 'Short and factual. Mention Swat where it fits naturally.' },
+      { name: 'sort_order', label: 'Display order', type: 'number', min: 0, hint: 'Lower numbers appear first.' },
+      { name: 'is_published', label: 'Show on website', type: 'checkbox' },
+    ],
+    columns: [
+      { label: 'Question', render: (r) => str(r.question) },
+      { label: 'Website', render: () => '', pill: (r) => yesNo(r.is_published) },
+    ],
+  },
+  {
     path: 'announcements',
     table: 'announcements',
     title: 'Announcements',

@@ -1,0 +1,13 @@
+// Cloudflare Workers static-assets settings for the website.
+// - Pages are served from ./dist (pre-rendered HTML files like about.html).
+// - Unknown addresses and /admin get 404.html, the app shell, which then shows
+//   the right screen (admin login, "Clean bowled" page, or new content).
+{
+  "name": "swatkingsacademy",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

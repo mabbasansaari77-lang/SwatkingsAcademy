@@ -104,6 +104,14 @@ export interface PlayerMedia {
   created_at: string;
 }
 
+export interface Faq {
+  id: string;
+  question: string;
+  answer: string;
+  is_published: boolean;
+  sort_order: number;
+}
+
 export type FixtureStatus = 'scheduled' | 'postponed' | 'cancelled' | 'completed' | 'abandoned';
 
 export interface MatchResult {

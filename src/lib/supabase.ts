@@ -6,7 +6,7 @@ const key = (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ??
   import.meta.env.VITE_SUPABASE_ANON_KEY) as string | undefined;
 
 function looksConfigured(u?: string, k?: string): u is string {
-  return Boolean(u && k && /^https:\/\//.test(u) && !u.includes('your-project-ref') && !k.startsWith('your-'));
+  return Boolean(u && k && /^(https:\/\/|http:\/\/(localhost|127\.0\.0\.1)[:/])/.test(u) && !u.includes('your-project-ref') && !k.startsWith('your-'));
 }
 
 export const isSupabaseConfigured = looksConfigured(url, key);
@@ -18,7 +18,12 @@ export const isSupabaseConfigured = looksConfigured(url, key);
  */
 export const supabase: SupabaseClient | null = isSupabaseConfigured
   ? createClient(url as string, key as string, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false },
+      auth: {
+        // During the build (pre-rendering) there is no browser storage and no signed-in user.
+        persistSession: typeof window !== 'undefined',
+        autoRefreshToken: typeof window !== 'undefined',
+        detectSessionInUrl: false,
+      },
     })
   : null;
 

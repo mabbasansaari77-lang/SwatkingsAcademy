@@ -68,6 +68,11 @@ export function Footer() {
               </Link>
             </li>
             <li>
+              <Link to="/faq" className="hover:text-accent-300">
+                FAQ
+              </Link>
+            </li>
+            <li>
               <Link to="/privacy" className="hover:text-accent-300">
                 Privacy policy
               </Link>

@@ -8,7 +8,7 @@ import { fetchAnnouncements } from '../lib/queries';
 import { useAsync } from '../lib/useAsync';
 
 export default function News() {
-  const state = useAsync(() => fetchAnnouncements());
+  const state = useAsync(() => fetchAnnouncements(), [], 'news');
   const [category, setCategory] = useState('all');
   const available = ANNOUNCEMENT_CATEGORIES.filter((c) => state.data?.some((a) => a.category === c.value));
 

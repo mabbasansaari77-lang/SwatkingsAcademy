@@ -24,7 +24,7 @@ async function loadSettings(): Promise<SiteSettings> {
 }
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
-  const { data, loading, reload } = useAsync(loadSettings);
+  const { data, loading, reload } = useAsync(loadSettings, [], 'settings');
   return (
     <SettingsContext.Provider value={{ settings: data ?? DEFAULT_SETTINGS, loading, reload }}>
       {children}

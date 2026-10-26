@@ -49,7 +49,7 @@ function PlayerCard({ player }: { player: PlayerProfile }) {
 }
 
 export default function Teams() {
-  const state = useAsync(fetchTeamsWithPlayers);
+  const state = useAsync(fetchTeamsWithPlayers, [], 'teams');
   return (
     <>
       <Seo

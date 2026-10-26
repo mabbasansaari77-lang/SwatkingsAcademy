@@ -9,7 +9,7 @@ import { fetchProgrammes } from '../lib/queries';
 import { useAsync } from '../lib/useAsync';
 
 export default function Programmes() {
-  const state = useAsync(() => fetchProgrammes());
+  const state = useAsync(() => fetchProgrammes(), [], 'programmes');
   const [filter, setFilter] = useState<string>('all');
   const { hash } = useLocation();
 

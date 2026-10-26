@@ -5,6 +5,7 @@ import { Loading } from './components/ui/States';
 import About from './pages/About';
 import Coaches from './pages/Coaches';
 import Contact from './pages/Contact';
+import Faq from './pages/Faq';
 import Fixtures from './pages/Fixtures';
 import Gallery from './pages/Gallery';
 import Home from './pages/Home';
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="gallery" element={<Gallery />} />
         <Route path="register" element={<Register />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="faq" element={<Faq />} />
         <Route path="privacy" element={<Privacy />} />
         <Route path="*" element={<NotFound />} />
       </Route>

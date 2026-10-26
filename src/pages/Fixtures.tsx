@@ -5,13 +5,17 @@ import { Seo } from '../components/ui/Seo';
 import { AsyncBlock, EmptyState } from '../components/ui/States';
 import { fetchPastFixtures, fetchUpcomingFixtures } from '../lib/queries';
 import { useAsync } from '../lib/useAsync';
+import { JsonLd } from '../components/ui/JsonLd';
+import { fixtureSchemas } from '../lib/schema';
+import { useSettings } from '../lib/settings';
 
 type Tab = 'upcoming' | 'results';
 
 export default function Fixtures() {
   const [tab, setTab] = useState<Tab>('upcoming');
-  const upcoming = useAsync(() => fetchUpcomingFixtures());
-  const past = useAsync(() => fetchPastFixtures(50));
+  const { settings } = useSettings();
+  const upcoming = useAsync(() => fetchUpcomingFixtures(), [], 'fixtures:upcoming');
+  const past = useAsync(() => fetchPastFixtures(50), [], 'fixtures:past');
 
   const tabs: { id: Tab; label: string }[] = [
     { id: 'upcoming', label: 'Upcoming fixtures' },
@@ -24,6 +28,9 @@ export default function Fixtures() {
         title="Fixtures and Results"
         description="Upcoming matches and results for Swat Kings Cricket Academy teams, including tournaments, venues and scorecard summaries."
       />
+      {upcoming.data && fixtureSchemas(upcoming.data, settings.academy_name).length > 0 && (
+        <JsonLd data={fixtureSchemas(upcoming.data, settings.academy_name)} />
+      )}
       <PageHeader
         page="fixtures"
         title="Fixtures and results"

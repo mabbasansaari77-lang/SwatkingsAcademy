@@ -8,7 +8,7 @@ import { fetchGallery } from '../lib/queries';
 import { useAsync } from '../lib/useAsync';
 
 export default function Gallery() {
-  const state = useAsync(() => fetchGallery());
+  const state = useAsync(() => fetchGallery(), [], 'gallery');
   const [category, setCategory] = useState('all');
   const available = GALLERY_CATEGORIES.filter((c) => state.data?.some((g) => g.category === c.value));
 

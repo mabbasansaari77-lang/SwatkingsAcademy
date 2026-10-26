@@ -9,10 +9,14 @@ import { mediaUrl } from '../lib/media';
 import { fetchAnnouncement } from '../lib/queries';
 import { useAsync } from '../lib/useAsync';
 import NotFound from './NotFound';
+import { JsonLd } from '../components/ui/JsonLd';
+import { articleSchema } from '../lib/schema';
+import { useSettings } from '../lib/settings';
 
 export default function NewsArticle() {
   const { slug = '' } = useParams();
-  const state = useAsync(() => fetchAnnouncement(slug), [slug]);
+  const { settings } = useSettings();
+  const state = useAsync(() => fetchAnnouncement(slug), [slug], `news:${slug}`);
 
   if (state.loading) {
     return (
@@ -40,6 +44,7 @@ export default function NewsArticle() {
         image={cover}
         type="article"
       />
+      <JsonLd data={articleSchema(article, settings.academy_name, cover)} />
       <header className="bg-navy-900 text-crease">
         <Container className="max-w-3xl py-14">
           <Link to="/news" className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-300 hover:text-accent-500">

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { getSeed } from './prerender';
 
 export interface AsyncState<T> {
   data: T | undefined;
@@ -16,9 +17,17 @@ interface InternalState<T> {
 /**
  * Runs an async loader and tracks loading/error state.
  * The loader re-runs whenever a value in `deps` changes, or when reload() is called.
+ *
+ * `seedKey` lets a pre-rendered page start with data that was fetched at build
+ * time (see lib/prerender.ts). The live data is still loaded straight after.
  */
-export function useAsync<T>(loader: () => Promise<T>, deps: unknown[] = []): AsyncState<T> {
-  const [state, setState] = useState<InternalState<T>>({ data: undefined, error: null, loading: true });
+export function useAsync<T>(loader: () => Promise<T>, deps: unknown[] = [], seedKey?: string): AsyncState<T> {
+  const [state, setState] = useState<InternalState<T>>(() => {
+    const seeded = getSeed<T>(seedKey);
+    return seeded !== undefined
+      ? { data: seeded, error: null, loading: false }
+      : { data: undefined, error: null, loading: true };
+  });
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
@@ -32,8 +41,13 @@ export function useAsync<T>(loader: () => Promise<T>, deps: unknown[] = []): Asy
         if (!cancelled) setState({ data: result, error: null, loading: false });
       })
       .catch((err: unknown) => {
-        if (!cancelled)
-          setState((s) => ({ ...s, loading: false, error: err instanceof Error ? err : new Error(String(err)) }));
+        if (cancelled) return;
+        // Keep showing pre-rendered data if the live refresh fails.
+        setState((s) =>
+          s.data !== undefined && tick === 0
+            ? { ...s, loading: false }
+            : { ...s, loading: false, error: err instanceof Error ? err : new Error(String(err)) },
+        );
       });
     return () => {
       cancelled = true;

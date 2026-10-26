@@ -13,7 +13,7 @@ import NotFound from './NotFound';
 
 export default function PlayerDetail() {
   const { id = '' } = useParams();
-  const state = useAsync(() => fetchPlayer(id), [id]);
+  const state = useAsync(() => fetchPlayer(id), [id], `player:${id}`);
 
   if (state.loading) {
     return (

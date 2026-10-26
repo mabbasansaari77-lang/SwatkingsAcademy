@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { getSeed } from './prerender';
 import { supabase } from './supabase';
 
 export const BANNER_PAGES = [
@@ -41,7 +42,9 @@ export function loadBanners(force = false): Promise<Record<string, PageBanner>> 
 
 /** The banner for one page, or null when none is set (or while loading). */
 export function useBanner(page: BannerPage | undefined): PageBanner | null {
-  const [banner, setBanner] = useState<PageBanner | null>(null);
+  const [banner, setBanner] = useState<PageBanner | null>(() =>
+    page ? (getSeed<Record<string, PageBanner>>('banners')?.[page] ?? null) : null,
+  );
   useEffect(() => {
     if (!page) return;
     let active = true;

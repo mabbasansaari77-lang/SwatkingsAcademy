@@ -6,7 +6,7 @@ import { fetchCoaches } from '../lib/queries';
 import { useAsync } from '../lib/useAsync';
 
 export default function Coaches() {
-  const state = useAsync(() => fetchCoaches());
+  const state = useAsync(() => fetchCoaches(), [], 'coaches');
   return (
     <>
       <Seo

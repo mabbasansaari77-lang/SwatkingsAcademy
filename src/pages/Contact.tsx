@@ -11,7 +11,14 @@ import { telLink, whatsappLink } from '../lib/format';
 import { useSettings } from '../lib/settings';
 import { submitContactMessage } from '../lib/submissions';
 import { isSupabaseConfigured } from '../lib/supabase';
+import { JsonLd } from '../components/ui/JsonLd';
+import { organizationSchema } from '../lib/schema';
 import { contactSchema, type ContactData, type ContactInput } from '../lib/validation';
+
+function OrgSchema() {
+  const { settings } = useSettings();
+  return <JsonLd data={organizationSchema(settings)} />;
+}
 
 function ContactDetails() {
   const { settings } = useSettings();
@@ -103,6 +110,7 @@ export default function Contact() {
         title="Contact Us"
         description="Contact Swat Kings Cricket Academy about cricket coaching in Swat, trials and training programmes."
       />
+      <OrgSchema />
       <PageHeader
         page="contact" title="Contact us" intro="Questions about trials, programmes or training times? Send us a message." />
       <Container className="grid gap-10 py-12 lg:grid-cols-[1.5fr_1fr]">

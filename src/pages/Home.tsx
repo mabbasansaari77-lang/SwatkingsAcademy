@@ -8,6 +8,9 @@ import { ProgrammeTile } from '../components/cards/ProgrammeCard';
 import { HeroArt } from '../components/graphics/HeroArt';
 import { BannerMedia } from '../components/ui/BannerMedia';
 import { useBanner } from '../lib/banners';
+import { FaqList } from '../components/cards/FaqList';
+import { JsonLd } from '../components/ui/JsonLd';
+import { faqSchema, organizationSchema, websiteSchema } from '../lib/schema';
 import { LinkButton } from '../components/ui/Button';
 import { Container, Section } from '../components/ui/Section';
 import { Seo } from '../components/ui/Seo';
@@ -16,6 +19,7 @@ import { paragraphs, telLink, whatsappLink } from '../lib/format';
 import {
   fetchAnnouncements,
   fetchCoaches,
+  fetchFaqs,
   fetchHomeGallery,
   fetchPastFixtures,
   fetchProgrammes,
@@ -67,7 +71,7 @@ function Hero() {
 
 function Intro() {
   const { settings } = useSettings();
-  const counts = useAsync(fetchPublicCounts);
+  const counts = useAsync(fetchPublicCounts, [], 'counts');
   const stats = counts.data
     ? [
         { n: counts.data.programmes, label: counts.data.programmes === 1 ? 'Training programme' : 'Training programmes' },
@@ -112,7 +116,7 @@ function Intro() {
 }
 
 function Programmes() {
-  const state = useAsync(() => fetchProgrammes(4));
+  const state = useAsync(() => fetchProgrammes(4), [], 'home:programmes');
   return (
     <Section
       id="programmes"
@@ -169,7 +173,7 @@ function Philosophy() {
 }
 
 function Coaches() {
-  const state = useAsync(() => fetchCoaches(3));
+  const state = useAsync(() => fetchCoaches(3), [], 'home:coaches');
   if (!state.data?.length) return null;
   return (
     <Section
@@ -194,8 +198,8 @@ function Coaches() {
 }
 
 function Matches() {
-  const upcoming = useAsync(() => fetchUpcomingFixtures(3));
-  const past = useAsync(() => fetchPastFixtures(3));
+  const upcoming = useAsync(() => fetchUpcomingFixtures(3), [], 'home:upcoming');
+  const past = useAsync(() => fetchPastFixtures(3), [], 'home:past');
   if (!upcoming.data?.length && !past.data?.length) return null;
   return (
     <section aria-labelledby="matches-heading" className="bg-navy-950 py-16 text-crease sm:py-20">
@@ -245,7 +249,7 @@ function Matches() {
 }
 
 function GalleryPreview() {
-  const state = useAsync(() => fetchHomeGallery(8));
+  const state = useAsync(() => fetchHomeGallery(8), [], 'home:gallery');
   if (!state.data?.length) return null;
   return (
     <Section
@@ -264,7 +268,7 @@ function GalleryPreview() {
 }
 
 function News() {
-  const state = useAsync(() => fetchAnnouncements(3));
+  const state = useAsync(() => fetchAnnouncements(3), [], 'home:news');
   if (!state.data?.length) return null;
   return (
     <Section
@@ -286,6 +290,37 @@ function News() {
       </ul>
     </Section>
   );
+}
+
+function Faqs() {
+  const state = useAsync(() => fetchFaqs(), [], 'faqs');
+  if (!state.data?.length) return null;
+  const schema = faqSchema(state.data);
+  return (
+    <Section
+      id="faq"
+      tone="chalk"
+      title="Questions parents and players ask"
+      action={
+        state.data.length > 5 ? (
+          <LinkButton to="/faq" variant="outline-dark" size="sm">
+            All questions
+          </LinkButton>
+        ) : undefined
+      }
+    >
+      {schema && <JsonLd data={schema} />}
+      <div className="max-w-3xl">
+        <FaqList faqs={state.data.slice(0, 5)} openFirst />
+      </div>
+    </Section>
+  );
+}
+
+function SiteSchema() {
+  const { settings } = useSettings();
+  const site = websiteSchema(settings.academy_name);
+  return <JsonLd data={site ? [organizationSchema(settings), site] : organizationSchema(settings)} />;
 }
 
 function RegisterCta() {
@@ -370,6 +405,7 @@ export default function Home() {
         title="Swat Kings Cricket Academy"
         description="Swat Kings Cricket Academy offers cricket coaching in Swat for beginners, youth and developing players. Register for trials and explore our training programmes."
       />
+      <SiteSchema />
       <Hero />
       <Intro />
       <Programmes />
@@ -378,6 +414,7 @@ export default function Home() {
       <Matches />
       <GalleryPreview />
       <News />
+      <Faqs />
       <RegisterCta />
       <ContactStrip />
     </>
