@@ -4,6 +4,7 @@ import { Button } from '../components/ui/Button';
 import { ErrorState, Loading } from '../components/ui/States';
 import { GALLERY_CATEGORIES, labelFor } from '../lib/labels';
 import { deleteMedia, mediaUrl, uploadMedia, validateMediaFile, VIDEO_TYPES, youtubeThumb } from '../lib/media';
+import { preparePhoto } from '../lib/registrationPhotos';
 import { requireSupabase } from '../lib/supabase';
 import type { GalleryItem } from '../lib/types';
 import { unwrap, useAsync } from '../lib/useAsync';
@@ -13,7 +14,7 @@ import { AdminPageHeader, NoticeBar, Panel, type Notice } from './ui';
 
 interface FormState {
   source: 'file' | 'youtube';
-  file: File | null;
+  files: File[];
   youtube: string;
   title: string;
   caption: string;
@@ -26,7 +27,7 @@ interface FormState {
 
 const EMPTY_FORM: FormState = {
   source: 'file',
-  file: null,
+  files: [],
   youtube: '',
   title: '',
   caption: '',
@@ -55,6 +56,7 @@ function ItemForm({ item, onDone, onCancel }: { item: GalleryItem | null; onDone
       : EMPTY_FORM,
   );
   const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const set = <K extends keyof FormState>(k: K, v: FormState[K]) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -85,30 +87,67 @@ function ItemForm({ item, onDone, onCancel }: { item: GalleryItem | null; onDone
         return;
       }
 
-      let source: { media_type: 'image' | 'video'; storage_path: string | null; youtube_id: string | null };
       if (form.source === 'youtube') {
         const id = parseYouTubeId(form.youtube);
         if (!id) throw new Error('Paste a valid YouTube link, for example https://youtu.be/abc123XYZ00');
-        source = { media_type: 'video', storage_path: null, youtube_id: id };
-      } else {
-        if (!form.file) throw new Error('Choose a photo or video to upload.');
-        const problem = validateMediaFile(form.file, true);
-        if (problem) throw new Error(problem);
-        uploadedPath = await uploadMedia(form.file, 'gallery');
-        source = {
-          media_type: VIDEO_TYPES.includes(form.file.type) ? 'video' : 'image',
-          storage_path: uploadedPath,
-          youtube_id: null,
-        };
+        const res = await client
+          .from('gallery_items')
+          .insert({ ...meta, media_type: 'video', storage_path: null, youtube_id: id })
+          .select('id');
+        if (res.error || !res.data?.length) throw new Error(res.error?.message ?? 'permission denied');
+        onDone('Added to the gallery.');
+        return;
       }
-      const res = await client.from('gallery_items').insert({ ...meta, ...source }).select('id');
-      if (res.error || !res.data?.length) throw new Error(res.error?.message ?? 'permission denied');
-      onDone('Added to the gallery.');
+
+      if (!form.files.length) throw new Error('Choose one or more photos or videos to upload.');
+      const total = form.files.length;
+      let added = 0;
+      const failed: string[] = [];
+      for (const [i, original] of form.files.entries()) {
+        setProgress(`Uploading ${i + 1} of ${total}…`);
+        uploadedPath = null;
+        try {
+          const isVideo = VIDEO_TYPES.includes(original.type);
+          let file = original;
+          // Shrink big phone photos automatically so they fit the 5 MB limit.
+          if (!isVideo && original.type.startsWith('image/')) {
+            const blob = await preparePhoto(original);
+            file = new File([blob], `photo.${blob.type === 'image/jpeg' ? 'jpg' : 'img'}`, { type: blob.type || original.type });
+          }
+          const problem = validateMediaFile(file, true);
+          if (problem) throw new Error(problem);
+          uploadedPath = await uploadMedia(file, 'gallery');
+          const res = await client
+            .from('gallery_items')
+            .insert({
+              ...meta,
+              alt_text: (total > 1 ? `${alt} (${i + 1} of ${total})` : alt).slice(0, 200),
+              media_type: isVideo ? 'video' : 'image',
+              storage_path: uploadedPath,
+              youtube_id: null,
+            })
+            .select('id');
+          if (res.error || !res.data?.length) throw new Error(res.error?.message ?? 'permission denied');
+          added += 1;
+        } catch (err) {
+          if (uploadedPath) void deleteMedia(uploadedPath).catch(() => {});
+          failed.push(`${original.name}: ${friendlyDbError(err instanceof Error ? err.message : String(err))}`);
+        }
+      }
+      uploadedPath = null;
+      if (added === 0) throw new Error(failed.join(' · '));
+      if (failed.length) {
+        setError(`Added ${added} of ${total}. These could not be uploaded: ${failed.join(' · ')}`);
+        setForm((f) => ({ ...f, files: [] }));
+        return;
+      }
+      onDone(added === 1 ? 'Added to the gallery.' : `Added ${added} items to the gallery.`);
     } catch (err) {
       if (uploadedPath) void deleteMedia(uploadedPath).catch(() => {});
       setError(friendlyDbError(err instanceof Error ? err.message : String(err)));
     } finally {
       setBusy(false);
+      setProgress(null);
     }
   };
 
@@ -142,19 +181,27 @@ function ItemForm({ item, onDone, onCancel }: { item: GalleryItem | null; onDone
         {!item && form.source === 'file' && (
           <div>
             <label htmlFor="gallery-file" className="mb-1.5 block font-semibold">
-              File <span className="text-cherry">*</span>
+              Photos or videos <span className="text-cherry">*</span>
             </label>
             <input
               id="gallery-file"
               type="file"
-              accept="image/jpeg,image/png,image/webp,image/avif,video/mp4,video/webm"
-              onChange={(e) => set('file', e.target.files?.[0] ?? null)}
+              multiple
+              accept="image/*,video/mp4,video/webm"
+              onChange={(e) => set('files', Array.from(e.target.files ?? []))}
               className="block w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-navy-800 file:px-4 file:py-2 file:font-semibold file:text-crease"
             />
             <p className="mt-1 text-sm text-charcoal-600">
-              Photos: JPG, PNG, WebP or AVIF up to 5 MB (resize large phone photos first). Videos: MP4 or WebM up to 25
-              MB. Only upload media approved for public display, with consent from anyone clearly shown.
+              <strong>You can select many files at once</strong> (hold Ctrl, or tap several on a phone). Large phone photos
+              are resized automatically. Videos: MP4 or WebM up to 25 MB. Only upload media approved for public display,
+              with consent from anyone clearly shown.
             </p>
+            {form.files.length > 0 && (
+              <p className="mt-2 text-sm font-semibold text-navy-800">
+                {form.files.length} {form.files.length === 1 ? 'file' : 'files'} selected. The description, title, category
+                and settings below apply to all of them.
+              </p>
+            )}
           </div>
         )}
 
@@ -216,7 +263,13 @@ function ItemForm({ item, onDone, onCancel }: { item: GalleryItem | null; onDone
         <div className="flex gap-3">
           <Button type="submit" disabled={busy}>
             {busy ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Upload className="h-4 w-4" aria-hidden="true" />}
-            {busy ? 'Saving…' : item ? 'Save changes' : 'Add to gallery'}
+            {busy
+              ? progress ?? 'Saving…'
+              : item
+                ? 'Save changes'
+                : form.files.length > 1 && form.source === 'file'
+                  ? `Add ${form.files.length} to gallery`
+                  : 'Add to gallery'}
           </Button>
           <Button variant="ghost" onClick={onCancel}>Cancel</Button>
         </div>
