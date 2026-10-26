@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import News from './pages/News';
 import NewsArticle from './pages/NewsArticle';
 import NotFound from './pages/NotFound';
+import PlayerDetail from './pages/PlayerDetail';
 import Privacy from './pages/Privacy';
 import Programmes from './pages/Programmes';
 import Register from './pages/Register';
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="programmes" element={<Programmes />} />
         <Route path="coaches" element={<Coaches />} />
         <Route path="teams" element={<Teams />} />
+        <Route path="players/:id" element={<PlayerDetail />} />
         <Route path="fixtures" element={<Fixtures />} />
         <Route path="news" element={<News />} />
         <Route path="news/:slug" element={<NewsArticle />} />

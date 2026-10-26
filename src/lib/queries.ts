@@ -1,5 +1,5 @@
 import { requireSupabase } from './supabase';
-import type { Announcement, Coach, Fixture, GalleryItem, MatchResult, PlayerProfile, Programme, Team } from './types';
+import type { Announcement, Coach, Fixture, GalleryItem, MatchResult, PlayerMedia, PlayerProfile, Programme, Team } from './types';
 import { unwrap } from './useAsync';
 
 // Read-only queries used by the public website. RLS on the server makes sure
@@ -43,6 +43,29 @@ export async function fetchTeamsWithPlayers(): Promise<{ teams: TeamWithPlayers[
     teams: teamRows.map((t) => ({ ...t, players: playerRows.filter((p) => p.team_id === t.id) })),
     unassigned: playerRows.filter((p) => !p.team_id),
   };
+}
+
+export interface PlayerWithMedia extends PlayerProfile {
+  team: { name: string; age_group: string | null } | null;
+  media: PlayerMedia[];
+}
+
+/** One public player profile with its approved photos and videos (null if not public). */
+export async function fetchPlayer(id: string): Promise<PlayerWithMedia | null> {
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
+  const client = requireSupabase();
+  const [player, media] = await Promise.all([
+    client
+      .from('player_profiles')
+      .select('id, team_id, display_name, playing_role, batting_style, bowling_style, approved_achievements, bio, photo_url, sort_order, team:teams(name, age_group)')
+      .eq('id', id)
+      .eq('is_public', true)
+      .maybeSingle(),
+    client.from('player_media').select('*').eq('player_id', id).order('sort_order').order('created_at'),
+  ]);
+  const row = unwrap(player) as unknown as Omit<PlayerWithMedia, 'media'> | null;
+  if (!row) return null;
+  return { ...row, media: unwrap(media) as PlayerMedia[] };
 }
 
 const FIXTURE_SELECT = '*, team:teams(name), result:match_results(*)';

@@ -1,4 +1,5 @@
-import { ShieldCheck } from 'lucide-react';
+import { ChevronRight, ShieldCheck } from 'lucide-react';
+import { Link } from 'react-router';
 import { Container, PageHeader } from '../components/ui/Section';
 import { Seo } from '../components/ui/Seo';
 import { AsyncBlock, EmptyState } from '../components/ui/States';
@@ -12,25 +13,38 @@ function PlayerCard({ player }: { player: PlayerProfile }) {
   const photo = mediaUrl(player.photo_url);
   const styles = [player.batting_style, player.bowling_style].filter(Boolean).join(', ');
   return (
-    <article className="flex gap-4 bg-white p-4 shadow-[0_1px_0_rgb(0_0_0/0.06)]">
-      <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full bg-navy-800">
+    <Link
+      to={`/players/${player.id}`}
+      className="group flex h-full gap-4 bg-white p-4 shadow-[0_1px_0_rgb(0_0_0/0.06)] ring-navy-700 transition-shadow hover:ring-2"
+    >
+      <div className="h-20 w-20 shrink-0 overflow-hidden rounded-full bg-navy-800 ring-2 ring-accent-500">
         {photo ? (
-          <img src={photo} alt={`Photo of ${player.display_name}`} loading="lazy" width={64} height={64} className="h-full w-full object-cover" />
+          <img
+            src={photo}
+            alt={`Photo of ${player.display_name}`}
+            loading="lazy"
+            width={80}
+            height={80}
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
         ) : (
-          <span className="flex h-full w-full items-center justify-center font-display text-2xl font-black text-accent-300">
+          <span className="flex h-full w-full items-center justify-center font-display text-3xl font-black text-accent-300">
             {player.display_name.charAt(0).toUpperCase()}
           </span>
         )}
       </div>
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <h4 className="font-display text-xl font-bold text-navy-900">{player.display_name}</h4>
         {player.playing_role && <p className="text-sm font-semibold text-accent-700">{labelFor(PLAYING_ROLES, player.playing_role)}</p>}
         {styles && <p className="text-sm text-charcoal-600">{styles}</p>}
         {player.approved_achievements && (
-          <p className="mt-1 whitespace-pre-line text-sm text-charcoal-800">{player.approved_achievements}</p>
+          <p className="mt-1 line-clamp-2 whitespace-pre-line text-sm text-charcoal-800">{player.approved_achievements}</p>
         )}
+        <span className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-navy-800 group-hover:underline">
+          View profile, photos and videos <ChevronRight className="h-4 w-4" aria-hidden="true" />
+        </span>
       </div>
-    </article>
+    </Link>
   );
 }
 

@@ -53,6 +53,8 @@ export interface ResourceDef {
   fields: FieldDef[];
   columns: ColumnDef[];
   defaults: Row;
+  /** Extra per-row links, e.g. to manage a player's photos */
+  rowLinks?: { label: string; to: (row: Row) => string }[];
   /** Adjust values just before saving */
   beforeSave?: (values: Row) => Row;
 }
@@ -199,7 +201,15 @@ export const RESOURCES: ResourceDef[] = [
       { name: 'batting_style', label: 'Batting style', type: 'text', max: 60, hint: 'e.g. Right-hand bat' },
       { name: 'bowling_style', label: 'Bowling style', type: 'text', max: 60, hint: 'e.g. Left-arm spin' },
       { name: 'approved_achievements', label: 'Approved achievements', type: 'textarea', max: 2000, hint: 'Only verified achievements.' },
-      { name: 'photo_url', label: 'Photo', type: 'image', folder: 'players', hint: 'Only with consent.' },
+      {
+        name: 'bio',
+        label: 'About the player (profile page text)',
+        type: 'textarea',
+        max: 3000,
+        rows: 5,
+        hint: 'Shown on the player’s own page. No dates of birth, school, address or contact details.',
+      },
+      { name: 'photo_url', label: 'Profile photo', type: 'image', folder: 'players', hint: 'Main photo. Only with consent. Add more photos and videos with “Photos & videos” in the list below.' },
       {
         name: 'consent_confirmed',
         label: 'Consent confirmed',
@@ -215,6 +225,7 @@ export const RESOURCES: ResourceDef[] = [
       { label: 'Consent', render: () => '', pill: (r) => yesNo(r.consent_confirmed, 'Confirmed', 'Not confirmed') },
       { label: 'Website', render: () => '', pill: (r) => yesNo(r.is_public) },
     ],
+    rowLinks: [{ label: 'Photos & videos', to: (r) => `/admin/players/${String(r.id)}/media` }],
   },
   {
     path: 'fixtures',

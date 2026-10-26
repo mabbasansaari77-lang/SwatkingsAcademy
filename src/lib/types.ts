@@ -85,10 +85,23 @@ export interface PlayerProfile {
   batting_style: string | null;
   bowling_style: string | null;
   approved_achievements: string | null;
+  bio?: string | null;
   photo_url: string | null;
   consent_confirmed: boolean;
   is_public: boolean;
   sort_order: number;
+}
+
+export interface PlayerMedia {
+  id: string;
+  player_id: string;
+  media_type: 'image' | 'video';
+  storage_path: string | null;
+  youtube_id: string | null;
+  caption: string | null;
+  alt_text: string;
+  sort_order: number;
+  created_at: string;
 }
 
 export type FixtureStatus = 'scheduled' | 'postponed' | 'cancelled' | 'completed' | 'abandoned';

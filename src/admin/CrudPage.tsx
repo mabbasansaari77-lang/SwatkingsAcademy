@@ -1,5 +1,6 @@
 import { Loader2, Pencil, Plus, Search, Trash2, Upload, X } from 'lucide-react';
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
+import { Link } from 'react-router';
 import { Button } from '../components/ui/Button';
 import { ErrorState, Loading } from '../components/ui/States';
 import { fromLocalInput, toLocalInput } from '../lib/format';
@@ -438,6 +439,15 @@ export function CrudPage({ resource }: { resource: ResourceDef }) {
                       );
                     })}
                     <td className="py-2 text-right whitespace-nowrap">
+                      {resource.rowLinks?.map((l) => (
+                        <Link
+                          key={l.label}
+                          to={l.to(row)}
+                          className="mr-1 inline-flex items-center gap-1 rounded px-2 py-1 font-semibold text-navy-800 hover:bg-navy-800/10"
+                        >
+                          {l.label}
+                        </Link>
+                      ))}
                       <button
                         type="button"
                         onClick={() => {
