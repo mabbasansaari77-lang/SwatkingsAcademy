@@ -8,6 +8,7 @@ import Messages from './Messages';
 import PageBannersAdmin from './PageBannersAdmin';
 import PlayerMediaAdmin from './PlayerMediaAdmin';
 import Registrations from './Registrations';
+import ReviewsAdmin from './ReviewsAdmin';
 import { RequireAdmin } from './RequireAdmin';
 import { RESOURCES } from './resources';
 import SettingsAdmin from './SettingsAdmin';
@@ -29,6 +30,7 @@ export default function AdminRoutes() {
           <Route index element={<Dashboard />} />
           <Route path="registrations" element={<Registrations />} />
           <Route path="messages" element={<Messages />} />
+          <Route path="reviews" element={<ReviewsAdmin />} />
           {RESOURCES.map((r) => (
             <Route key={r.path} path={r.path} element={<CrudPage key={r.path} resource={r} />} />
           ))}

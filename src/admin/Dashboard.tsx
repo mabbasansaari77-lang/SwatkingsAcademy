@@ -1,4 +1,4 @@
-import { CalendarDays, ClipboardList, Image, Inbox, Megaphone, Shield, User, Users } from 'lucide-react';
+import { CalendarDays, ClipboardList, Image, Inbox, Megaphone, Shield, Star, User, Users } from 'lucide-react';
 import { Link } from 'react-router';
 import { ErrorState, Loading } from '../components/ui/States';
 import { formatDateTime } from '../lib/format';
@@ -24,11 +24,12 @@ const gte = (column: string, value: string): Filter => ({ column, op: 'gte', val
 async function loadOverview() {
   const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString();
   const now = new Date().toISOString();
-  const [total, pending, week, unread, programmes, coaches, teams, upcoming, news, gallery, recent] = await Promise.all([
+  const [total, pending, week, unread, pendingReviews, programmes, coaches, teams, upcoming, news, gallery, recent] = await Promise.all([
     count('registrations'),
     count('registrations', [eq('status', 'pending')]),
     count('registrations', [gte('created_at', weekAgo)]),
     count('contact_messages', [eq('is_read', false)]),
+    count('reviews', [eq('status', 'pending')]),
     count('programmes', [eq('is_published', true)]),
     count('coaches', [eq('is_published', true)]),
     count('teams', [eq('is_published', true)]),
@@ -42,7 +43,7 @@ async function loadOverview() {
       .limit(6)
       .then((r) => unwrap(r) as unknown as Registration[]),
   ]);
-  return { total, pending, week, unread, programmes, coaches, teams, upcoming, news, gallery, recent };
+  return { total, pending, week, unread, pendingReviews, programmes, coaches, teams, upcoming, news, gallery, recent };
 }
 
 export default function Dashboard() {
@@ -59,6 +60,7 @@ export default function Dashboard() {
     { label: 'Unread messages', value: d.unread, to: '/admin/messages', icon: Inbox, accent: d.unread > 0 },
   ];
   const content = [
+    { label: 'Reviews to approve', value: d.pendingReviews, to: '/admin/reviews', icon: Star },
     { label: 'Published programmes', value: d.programmes, to: '/admin/programmes', icon: Shield },
     { label: 'Published coaches', value: d.coaches, to: '/admin/coaches', icon: User },
     { label: 'Published teams', value: d.teams, to: '/admin/teams', icon: Users },

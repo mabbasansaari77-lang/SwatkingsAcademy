@@ -6,5 +6,6 @@ export const NAV_ITEMS = [
   { to: '/fixtures', label: 'Fixtures & Results' },
   { to: '/news', label: 'News' },
   { to: '/gallery', label: 'Gallery' },
+  { to: '/reviews', label: 'Reviews' },
   { to: '/contact', label: 'Contact' },
 ];

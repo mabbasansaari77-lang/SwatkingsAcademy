@@ -211,3 +211,17 @@ export interface ContactMessage {
   is_read: boolean;
   created_at: string;
 }
+
+export type ReviewRelationship = 'parent' | 'player' | 'former_player' | 'visitor' | 'other';
+export type ReviewStatus = 'pending' | 'approved' | 'hidden';
+
+export interface Review {
+  id: string;
+  name: string;
+  relationship: ReviewRelationship;
+  rating: number;
+  comment: string;
+  status: ReviewStatus;
+  approved_at: string | null;
+  created_at: string;
+}

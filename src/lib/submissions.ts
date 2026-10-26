@@ -1,6 +1,6 @@
 import { uploadRegistrationPhoto } from './registrationPhotos';
 import { NotConfiguredError, requireSupabase } from './supabase';
-import type { ContactData, RegistrationData } from './validation';
+import type { ContactData, RegistrationData, ReviewData } from './validation';
 
 /** Error with a message that is safe and helpful to show to visitors. */
 export class SubmissionError extends Error {
@@ -54,6 +54,17 @@ export async function submitContactMessage(data: ContactData): Promise<void> {
   let res;
   try {
     res = await requireSupabase().rpc('submit_contact_message', { payload: data });
+  } catch (err) {
+    if (err instanceof NotConfiguredError) throw new SubmissionError(err.message);
+    throw toFriendlyError({ message: err instanceof Error ? err.message : String(err) });
+  }
+  if (res.error) throw toFriendlyError(res.error);
+}
+
+export async function submitReview(data: ReviewData): Promise<void> {
+  let res;
+  try {
+    res = await requireSupabase().rpc('submit_review', { payload: { ...data, rating: String(data.rating) } });
   } catch (err) {
     if (err instanceof NotConfiguredError) throw new SubmissionError(err.message);
     throw toFriendlyError({ message: err instanceof Error ? err.message : String(err) });

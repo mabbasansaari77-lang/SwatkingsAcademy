@@ -47,6 +47,7 @@ describe('Public website', () => {
     '/fixtures': /fixtures and results/i,
     '/news': /cricket trials and academy news/i,
     '/gallery': /gallery/i,
+    '/reviews': /cricket academy reviews/i,
     '/contact': /contact our cricket academy in swat/i,
     '/register': /player registration/i,
     '/privacy': /privacy policy/i,

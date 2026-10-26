@@ -115,6 +115,36 @@ export const contactSchema = z.object({
 export type ContactInput = z.input<typeof contactSchema>;
 export type ContactData = z.output<typeof contactSchema>;
 
+export const REVIEW_RELATIONSHIPS = [
+  { value: 'parent', label: 'Parent or guardian' },
+  { value: 'player', label: 'Current player' },
+  { value: 'former_player', label: 'Former player' },
+  { value: 'visitor', label: 'Visitor or supporter' },
+  { value: 'other', label: 'Other' },
+] as const;
+
+const LINK_PATTERN = /(https?:\/\/|www\.|\.com\b|\.net\b|\.xyz\b)/i;
+
+export const reviewSchema = z.object({
+  name: z.string().trim().min(2, 'Enter your name.').max(80, 'Name must be 80 characters or fewer.'),
+  relationship: z.enum(values(REVIEW_RELATIONSHIPS), { errorMap: () => ({ message: 'Choose who you are.' }) }),
+  rating: z.coerce
+    .number({ invalid_type_error: 'Choose a star rating.' })
+    .int()
+    .min(1, 'Choose a star rating.')
+    .max(5, 'Choose a star rating.'),
+  comment: z
+    .string()
+    .trim()
+    .min(10, 'Write at least 10 characters.')
+    .max(1500, 'Keep your review under 1500 characters.')
+    .refine((v) => !LINK_PATTERN.test(v), 'Please remove web links from your review.'),
+  website: z.string().max(200).optional(),
+});
+
+export type ReviewInput = z.input<typeof reviewSchema>;
+export type ReviewData = z.output<typeof reviewSchema>;
+
 export function slugify(text: string): string {
   return text
     .toLowerCase()

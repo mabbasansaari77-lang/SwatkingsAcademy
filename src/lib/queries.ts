@@ -1,5 +1,5 @@
 import { requireSupabase } from './supabase';
-import type { Announcement, Coach, Faq, Fixture, GalleryItem, MatchResult, PlayerMedia, PlayerProfile, Programme, Team } from './types';
+import type { Announcement, Coach, Faq, Fixture, GalleryItem, MatchResult, PlayerMedia, PlayerProfile, Programme, Review, Team } from './types';
 import { unwrap } from './useAsync';
 
 // Read-only queries used by the public website. RLS on the server makes sure
@@ -154,6 +154,16 @@ export async function fetchFaqs(): Promise<Faq[]> {
     .order('sort_order')
     .order('created_at');
   return unwrap(res) as Faq[];
+}
+
+export async function fetchReviews(): Promise<Review[]> {
+  const res = await requireSupabase()
+    .from('reviews')
+    .select('id, name, relationship, rating, comment, status, approved_at, created_at')
+    .eq('status', 'approved')
+    .order('created_at', { ascending: false })
+    .limit(200);
+  return unwrap(res) as Review[];
 }
 
 export interface PublicCounts {
