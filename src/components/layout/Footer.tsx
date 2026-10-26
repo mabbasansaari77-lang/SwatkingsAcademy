@@ -26,11 +26,11 @@ export function Footer() {
   const hasContact = settings.address || settings.phone || settings.email || wa;
 
   return (
-    <footer className="bg-charcoal-950 text-crease/90">
+    <footer className="bg-navy-950 text-crease/90">
       <Container className="grid gap-12 py-16 md:grid-cols-[1.3fr_1fr_1fr]">
         <div>
           <Logo light />
-          <p className="mt-5 max-w-sm text-crease/70">
+          <p className="mt-5 max-w-sm text-crease/85">
             Cricket coaching in Swat for beginners, youth players and developing cricketers.
           </p>
           {socials.length > 0 && (
@@ -41,7 +41,7 @@ export function Footer() {
                     href={href as string}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-charcoal-800 text-crease hover:border-accent-500 hover:text-accent-300"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/20 text-crease hover:border-accent-500 hover:text-accent-300"
                   >
                     <Icon className="h-5 w-5" />
                     <span className="sr-only">{label} (opens in a new tab)</span>
@@ -111,7 +111,7 @@ export function Footer() {
               )}
             </ul>
           ) : (
-            <p className="mt-4 text-crease/70">
+            <p className="mt-4 text-crease/85">
               Contact details will be published here soon. Meanwhile, send us a message through the{' '}
               <Link to="/contact" className="text-accent-300 underline underline-offset-4">
                 contact form
@@ -121,8 +121,8 @@ export function Footer() {
           )}
         </div>
       </Container>
-      <div className="border-t border-charcoal-800">
-        <Container className="flex flex-wrap items-center justify-between gap-3 py-5 text-sm text-crease/60">
+      <div className="border-t border-white/20">
+        <Container className="flex flex-wrap items-center justify-between gap-3 py-5 text-sm text-crease/80">
           <p>
             © {new Date().getFullYear()} {settings.academy_name}
           </p>

@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 /* ------------------------------------------------------------------
-   Swat Kings design tokens (sky blue theme)
+   Swat Kings design tokens — complete sky blue theme
    navy    — deep blue for dark sections and headings
    sky     — light sky tints for text on dark and soft backgrounds
    accent  — the brand sky blue: buttons, highlights, crease lines
@@ -10,12 +10,13 @@
    cherry  — red leather ball, used only for the ball motif
    ------------------------------------------------------------------ */
 @theme {
-  --color-navy-950: #061a2e;
-  --color-navy-900: #0a2540;
-  --color-navy-800: #0c3358;
-  --color-navy-700: #0f4271;
-  --color-navy-600: #12538c;
-  --color-sky-500: #0369a1;
+  /* "navy-*" names are kept so no classes change; the values are now sky blues */
+  --color-navy-950: #075985;
+  --color-navy-900: #0369a1;
+  --color-navy-800: #0369a1;
+  --color-navy-700: #0284c7;
+  --color-navy-600: #075985;
+  --color-sky-500: #0284c7;
   --color-sky-300: #7dd3fc;
   --color-sky-100: #e0f2fe;
   --color-charcoal-950: #12161a;
@@ -23,10 +24,10 @@
   --color-charcoal-800: #2a323b;
   --color-charcoal-600: #4b5563;
   --color-charcoal-400: #7b8794;
-  --color-crease: #f5f9fc;
-  --color-chalk: #e7f1f9;
-  --color-accent-300: #7dd3fc;
-  --color-accent-500: #38bdf8;
+  --color-crease: #f0f9ff;
+  --color-chalk: #e0f2fe;
+  --color-accent-300: #bae6fd;
+  --color-accent-500: #7dd3fc;
   --color-accent-700: #0369a1;
   --color-cherry: #b3262b;
 
@@ -100,10 +101,10 @@
 
   /* Scoreboard panels for fixtures and results */
   .scoreboard {
-    background: var(--color-charcoal-950);
+    background: var(--color-navy-950);
     color: var(--color-crease);
-    border: 1px solid var(--color-charcoal-800);
-    box-shadow: inset 0 0 0 4px var(--color-charcoal-900);
+    border: 1px solid #0c4a6e;
+    box-shadow: inset 0 0 0 4px #0c4a6e;
   }
   .scoreboard-digit {
     font-family: var(--font-display);

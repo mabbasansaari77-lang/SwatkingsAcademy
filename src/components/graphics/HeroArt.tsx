@@ -14,9 +14,9 @@ export function HeroArt() {
     >
       <defs>
         <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#061a2e" />
-          <stop offset="0.55" stopColor="#0c3358" />
-          <stop offset="1" stopColor="#0a2540" />
+          <stop offset="0" stopColor="#0369a1" />
+          <stop offset="0.55" stopColor="#0ea5e9" />
+          <stop offset="1" stopColor="#7dd3fc" />
         </linearGradient>
         <radialGradient id="glowL" cx="0.5" cy="0.5" r="0.5">
           <stop offset="0" stopColor="#f4f6f1" stopOpacity="0.55" />
@@ -46,8 +46,8 @@ export function HeroArt() {
       <g>
         <path d="M150 120 L-120 900 L520 900 Z" fill="url(#cone)" />
         <path d="M1290 120 L920 900 L1560 900 Z" fill="url(#cone)" />
-        <rect x="140" y="120" width="8" height="380" fill="#1c2a3a" />
-        <rect x="1292" y="120" width="8" height="380" fill="#1c2a3a" />
+        <rect x="140" y="120" width="8" height="380" fill="#e0f2fe" />
+        <rect x="1292" y="120" width="8" height="380" fill="#e0f2fe" />
         <rect x="112" y="96" width="66" height="30" rx="3" fill="#e7f1f9" />
         <rect x="1262" y="96" width="66" height="30" rx="3" fill="#e7f1f9" />
         <circle cx="145" cy="111" r="90" fill="url(#glowL)" />
@@ -57,7 +57,7 @@ export function HeroArt() {
       {/* Stands silhouette */}
       <path
         d="M0 470 Q360 400 720 400 Q1080 400 1440 470 L1440 520 Q1080 455 720 455 Q360 455 0 520 Z"
-        fill="#0a2036"
+        fill="#0c4a6e"
       />
 
       {/* Outfield */}

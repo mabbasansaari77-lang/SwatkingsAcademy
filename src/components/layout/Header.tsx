@@ -17,7 +17,7 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-navy-800 bg-navy-950/95 text-crease backdrop-blur supports-[backdrop-filter]:bg-navy-950/85">
+    <header className="sticky top-0 z-40 border-b border-white/15 bg-navy-900 text-crease shadow-sm">
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <Link to="/" aria-label="Swat Kings Cricket Academy home" className="shrink-0">
           <Logo light />
@@ -50,7 +50,7 @@ export function Header() {
           </span>
           <button
             type="button"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-md text-crease hover:bg-navy-800 xl:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-md text-crease hover:bg-white/10 xl:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
             onClick={() => setOpen((o) => !o)}
@@ -62,10 +62,10 @@ export function Header() {
       </div>
 
       {open && (
-        <nav id="mobile-menu" aria-label="Main" className="border-t border-navy-800 bg-navy-950 xl:hidden">
+        <nav id="mobile-menu" aria-label="Main" className="border-t border-white/15 bg-navy-900 xl:hidden">
           <ul className="mx-auto max-w-7xl px-4 py-3 sm:px-6">
             <li>
-              <NavLink to="/" end onClick={close} className="block border-b border-navy-800/70 py-3 text-lg font-semibold">
+              <NavLink to="/" end onClick={close} className="block border-b border-white/15 py-3 text-lg font-semibold">
                 Home
               </NavLink>
             </li>
@@ -75,7 +75,7 @@ export function Header() {
                   to={item.to}
                   onClick={close}
                   className={({ isActive }) =>
-                    `block border-b border-navy-800/70 py-3 text-lg font-semibold ${isActive ? 'text-accent-300' : ''}`
+                    `block border-b border-white/15 py-3 text-lg font-semibold ${isActive ? 'text-accent-300' : ''}`
                   }
                 >
                   {item.label}

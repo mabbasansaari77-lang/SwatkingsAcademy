@@ -28,9 +28,9 @@ import type { ReactNode } from 'react';
 function Hero() {
   const { settings } = useSettings();
   return (
-    <section aria-labelledby="hero-heading" className="relative isolate overflow-hidden bg-charcoal-950 text-crease">
+    <section aria-labelledby="hero-heading" className="relative isolate overflow-hidden bg-navy-900 text-crease">
       <HeroArt />
-      <div className="absolute inset-0 -z-0 bg-gradient-to-r from-charcoal-950/90 via-charcoal-950/55 to-transparent" aria-hidden="true" />
+      <div className="absolute inset-0 -z-0 bg-gradient-to-r from-navy-950/85 via-navy-900/45 to-transparent" aria-hidden="true" />
       <Container className="relative flex min-h-[calc(100svh-4.5rem)] flex-col justify-center py-20">
         <div className="max-w-3xl">
           <h1
