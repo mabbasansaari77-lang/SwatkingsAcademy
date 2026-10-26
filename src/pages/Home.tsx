@@ -5,7 +5,7 @@ import { CoachCard } from '../components/cards/CoachCard';
 import { FixtureBoard, ResultBoard } from '../components/cards/FixtureCards';
 import { GalleryGrid } from '../components/cards/GalleryGrid';
 import { ProgrammeTile } from '../components/cards/ProgrammeCard';
-import { HeroArt } from '../components/graphics/HeroArt';
+import { HeroArt, HeroMotion } from '../components/graphics/HeroArt';
 import { BannerMedia } from '../components/ui/BannerMedia';
 import { useBanner } from '../lib/banners';
 import { FaqList } from '../components/cards/FaqList';
@@ -30,26 +30,44 @@ import { useSettings } from '../lib/settings';
 import { useAsync } from '../lib/useAsync';
 import { DEFAULT_INTRO, PILLARS } from '../lib/content';
 import { CountUp } from '../components/ui/CountUp';
-import { useReveal } from '../lib/motion';
-import type { ReactNode } from 'react';
+import { prefersReducedMotion, useReveal } from '../lib/motion';
+import { useRef, type PointerEvent, type ReactNode } from 'react';
 
 function Hero() {
   const { settings } = useSettings();
   const banner = useBanner('home');
+  const ref = useRef<HTMLElement>(null);
+  // Desktop parallax: layers marked .parallax drift with the mouse
+  const onPointerMove = (e: PointerEvent<HTMLElement>) => {
+    const el = ref.current;
+    if (!el || e.pointerType !== 'mouse' || prefersReducedMotion()) return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--px', ((e.clientX - r.left) / r.width - 0.5).toFixed(3));
+    el.style.setProperty('--py', ((e.clientY - r.top) / r.height - 0.5).toFixed(3));
+  };
+  const words = settings.hero_headline.split(/\s+/).filter(Boolean);
   return (
-    <section aria-labelledby="hero-heading" className="relative isolate overflow-hidden bg-space-950 text-crease">
+    <section
+      ref={ref}
+      onPointerMove={onPointerMove}
+      aria-labelledby="hero-heading"
+      className="relative isolate overflow-hidden bg-space-950 text-crease"
+    >
       {banner ? <BannerMedia banner={banner} /> : <HeroArt />}
       <div className="absolute inset-0 -z-0 bg-gradient-to-r from-space-950/90 via-space-950/50 to-transparent" aria-hidden="true" />
+      <HeroMotion />
       <Container className="relative flex min-h-[calc(100svh-4.5rem)] flex-col justify-center py-20">
         <div className="max-w-3xl">
           {settings.registration_open && (
-            <Link
-              to="/register"
-              className="glass animate-rise mb-6 inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-sm font-semibold text-sky-100 transition-colors hover:border-neon hover:text-white"
-            >
-              <span className="live-dot" aria-hidden="true" />
-              Admissions open: register for trials
-            </Link>
+            <div className="animate-rise mb-6">
+              <Link
+                to="/register"
+                className="border-spin inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-sm font-semibold text-sky-100 transition-colors [--spin-bg:rgb(4_24_47/0.85)] hover:text-white"
+              >
+                <span className="live-dot" aria-hidden="true" />
+                Admissions open: register for trials
+              </Link>
+            </div>
           )}
           <h1
             id="hero-heading"
@@ -58,7 +76,15 @@ function Hero() {
             <span className="tech-label mb-4 block text-accent-300 sm:text-sm">
               {settings.academy_name} · Cricket academy in Swat, Mingora
             </span>
-            <span className="text-hologram neon-glow block">{settings.hero_headline}</span>
+            <span className="neon-glow block">
+              {words.map((w, i) => (
+                <span key={i}>
+                  <span className="word-in" style={{ animationDelay: `${0.15 + i * 0.12}s, 0s` }}>
+                    {w}
+                  </span>{' '}
+                </span>
+              ))}
+            </span>
           </h1>
           <p className="animate-rise mt-6 max-w-xl text-lg text-crease/85 sm:text-xl" style={{ animationDelay: '0.12s' }}>
             {settings.hero_subheading}
@@ -150,7 +176,7 @@ function Intro() {
         {stats.length > 0 && (
           <dl className="grid grid-cols-3 gap-3 lg:grid-cols-1">
             {stats.map((s) => (
-              <div key={s.label} className="card-tech px-4 py-4 sm:px-5">
+              <div key={s.label} className="card-tech border-spin px-4 py-4 sm:px-5">
                 <dt className="sr-only">{s.label}</dt>
                 <dd>
                   <span className="block font-tech text-4xl font-bold text-navy-800 sm:text-5xl">
