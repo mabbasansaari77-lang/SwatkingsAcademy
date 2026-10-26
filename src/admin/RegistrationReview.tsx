@@ -1,4 +1,4 @@
-import { CheckCircle2, ExternalLink, Loader2, Mail, MessageCircle, MessageSquare, X } from 'lucide-react';
+import { CheckCircle2, ExternalLink, Loader2, Mail, MessageCircle, MessageSquare, Trash2, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from '../components/ui/Button';
 import { buttonClass } from '../components/ui/buttonClass';
@@ -151,7 +151,8 @@ export function RegistrationReview({
 }) {
   const [status, setStatus] = useState<RegistrationStatus>(reg.status);
   const [notes, setNotes] = useState(reg.admin_notes ?? '');
-  const [busy, setBusy] = useState<'save' | 'accept' | null>(null);
+  const [busy, setBusy] = useState<'save' | 'accept' | 'delete' | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [accepted, setAccepted] = useState<{ profileId: string | null } | null>(
     reg.status === 'accepted' ? { profileId: reg.player_profile_id } : null,
@@ -216,6 +217,24 @@ export function RegistrationReview({
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not save.');
     } finally {
+      setBusy(null);
+    }
+  };
+
+  const remove = async () => {
+    setBusy('delete');
+    setError(null);
+    try {
+      const client = requireSupabase();
+      if (photos.length) {
+        const del = await client.storage.from(REGISTRATION_BUCKET).remove(photos);
+        if (del.error) throw new Error('The photos could not be deleted. Try again.');
+      }
+      const res = await client.from('registrations').delete().eq('id', reg.id).select('id');
+      if (res.error || !res.data?.length) throw new Error(friendlyDbError(res.error?.message ?? 'permission denied'));
+      onChanged(`Deleted registration ${reg.reference} (${reg.player_name}).`, true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not delete this registration.');
       setBusy(null);
     }
   };
@@ -343,7 +362,35 @@ export function RegistrationReview({
         <Button variant="ghost" onClick={onClose}>
           Close
         </Button>
+        <Button
+          variant="ghost"
+          className="ml-auto text-cherry hover:bg-cherry/10"
+          onClick={() => setConfirmDelete(true)}
+          disabled={busy !== null || confirmDelete}
+        >
+          <Trash2 className="h-4 w-4" aria-hidden="true" /> Delete
+        </Button>
       </div>
+      {confirmDelete && (
+        <div role="alertdialog" aria-labelledby="del-title" className="mt-4 rounded-md border-2 border-cherry/50 bg-cherry/5 p-4">
+          <p id="del-title" className="font-semibold text-charcoal-900">
+            Delete {reg.player_name}’s registration ({reg.reference}) permanently?
+          </p>
+          <p className="mt-1 text-sm text-charcoal-600">
+            This removes the registration and its uploaded photos. It cannot be undone.
+            {reg.player_profile_id && ' The public player profile is not removed — delete it under Player profiles if needed.'}
+          </p>
+          <div className="mt-3 flex gap-3">
+            <Button variant="danger" onClick={() => void remove()} disabled={busy !== null}>
+              {busy === 'delete' ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Trash2 className="h-4 w-4" aria-hidden="true" />}
+              Yes, delete
+            </Button>
+            <Button variant="ghost" onClick={() => setConfirmDelete(false)} disabled={busy !== null}>
+              Cancel
+            </Button>
+          </div>
+        </div>
+      )}
     </Panel>
   );
 }

@@ -5,12 +5,21 @@ import type { Registration } from '../lib/types';
 
 const rpc = vi.hoisted(() => vi.fn());
 const update = vi.hoisted(() => vi.fn());
+const removed = vi.hoisted(() => ({ rows: [] as string[], files: [] as string[] }));
 
 vi.mock('../lib/supabase', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../lib/supabase')>();
   const client = {
     rpc,
     from: () => ({
+      delete: () => ({
+        eq: (_col: string, id: string) => ({
+          select: async () => {
+            removed.rows.push(id);
+            return { data: [{ id }], error: null };
+          },
+        }),
+      }),
       update: (patch: unknown) => {
         update(patch);
         return { eq: () => ({ select: async () => ({ data: [{ id: 'r1' }], error: null }) }) };
@@ -21,6 +30,10 @@ vi.mock('../lib/supabase', async (importOriginal) => {
         createSignedUrls: async () => ({ data: [], error: null }),
         download: async () => ({ data: new Blob(['x'], { type: 'image/jpeg' }), error: null }),
         upload: async () => ({ data: {}, error: null }),
+        remove: async (paths: string[]) => {
+          removed.files.push(...paths);
+          return { data: [], error: null };
+        },
       }),
     },
   };
@@ -86,5 +99,17 @@ describe('Admin registration review', () => {
     await user.click(screen.getByRole('button', { name: /^accept registration$/i }));
     expect(rpc).toHaveBeenCalledWith('accept_registration', expect.objectContaining({ p_photo_path: null, p_extra_photos: [] }));
     expect(await screen.findByRole('link', { name: /send on whatsapp/i })).toBeInTheDocument();
+  });
+
+  it('deletes a registration and its photos only after confirming', async () => {
+    const onChanged = vi.fn();
+    const user = userEvent.setup();
+    render(<RegistrationReview reg={base} onClose={() => {}} onChanged={onChanged} />);
+    await user.click(screen.getByRole('button', { name: /^delete$/i }));
+    expect(removed.rows).toEqual([]);
+    await user.click(screen.getByRole('button', { name: /yes, delete/i }));
+    expect(removed.files).toEqual(base.photo_paths);
+    expect(removed.rows).toEqual(['r1']);
+    expect(onChanged).toHaveBeenCalledWith(expect.stringContaining('Deleted registration SK-2610-ABC123'), true);
   });
 });
