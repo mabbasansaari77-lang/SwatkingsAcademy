@@ -24,13 +24,13 @@ export function Header() {
         </Link>
 
         <nav aria-label="Main" className="hidden xl:block">
-          <ul className="flex items-center gap-1">
+          <ul className="flex items-center gap-0.5">
             {NAV_ITEMS.map((item) => (
               <li key={item.to}>
                 <NavLink
                   to={item.to}
                   className={({ isActive }) =>
-                    `relative rounded px-3 py-2 text-[0.95rem] font-semibold transition-colors hover:text-accent-300 ${
+                    `relative whitespace-nowrap rounded px-2.5 py-2 text-[0.95rem] font-semibold transition-colors hover:text-accent-300 ${
                       isActive ? 'text-accent-300' : 'text-crease/90'
                     }`
                   }
