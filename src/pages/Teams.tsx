@@ -53,11 +53,11 @@ export default function Teams() {
   return (
     <>
       <Seo
-        title="Cricket Players and Teams in Swat"
-        description="Cricket players and teams of Swat Kings Cricket Academy, a cricket club in Takhtaband, Mingora, Swat, with approved player profiles."
+        title="Swat Cricket Team and Players"
+        description="Swat cricket team and players of Swat Kings Cricket Academy, a cricket club in Swat (Takhtaband, Mingora, KPK), with approved player profiles."
       />
       <PageHeader
-        page="teams" title="Cricket players and teams" intro="Our squads and age groups at the cricket academy in Swat." />
+        page="teams" title="Cricket players and teams" intro="Our Swat cricket teams, squads and age groups at the cricket academy and club in Mingora." />
       <Container className="py-12">
         <p className="mb-8 flex max-w-2xl items-start gap-2 text-sm text-charcoal-600">
           <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-navy-600" aria-hidden="true" />

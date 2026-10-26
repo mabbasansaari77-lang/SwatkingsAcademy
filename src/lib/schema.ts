@@ -21,7 +21,7 @@ export function organizationSchema(s: SiteSettings): Record<string, unknown> {
       { '@type': 'AdministrativeArea', name: 'Swat District, Khyber Pakhtunkhwa, Pakistan' },
     ],
     knowsAbout: ['Cricket coaching', 'Batting', 'Bowling', 'Wicketkeeping', 'Fielding', 'Junior cricket', 'Cricket trials'],
-    keywords: 'cricket academy in Swat, cricket academy Mingora, cricket coaching Swat, cricket trials Swat, cricket club Takhtaband, cricket academy KPK',
+    keywords: 'cricket academy in Swat, Swat cricket academy, Swat cricket club, cricket academy Mingora, cricket coaching Swat, cricket trials Swat, cricket club Takhtaband, cricket academy in KPK',
   };
   const url = absoluteUrl('/');
   if (url) {
