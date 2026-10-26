@@ -108,7 +108,7 @@ export default function Contact() {
     <>
       <Seo
         title="Contact Us"
-        description="Contact Swat Kings Cricket Academy about cricket coaching in Swat, trials and training programmes."
+        description="Contact Swat Kings Cricket Academy in Takhtaband, Mingora, Swat about admission, fees, cricket coaching and training."
       />
       <OrgSchema />
       <PageHeader

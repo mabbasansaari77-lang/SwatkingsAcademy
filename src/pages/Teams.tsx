@@ -54,7 +54,7 @@ export default function Teams() {
     <>
       <Seo
         title="Players and Teams"
-        description="Teams and age groups at Swat Kings Cricket Academy, with approved player profiles."
+        description="Players and teams of Swat Kings Cricket Academy, a cricket club in Takhtaband, Mingora, Swat, with approved player profiles."
       />
       <PageHeader
         page="teams" title="Players and teams" intro="Our squads and age groups." />

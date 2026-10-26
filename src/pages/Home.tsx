@@ -403,7 +403,7 @@ export default function Home() {
     <>
       <Seo
         title="Swat Kings Cricket Academy"
-        description="Swat Kings Cricket Academy offers cricket coaching in Swat for beginners, youth and developing players. Register as a player and explore our training programmes."
+        description="Cricket academy in Mingora, Swat (Takhtaband). Cricket coaching and training for juniors, youth and adults. See admission, fees and player registration."
       />
       <SiteSchema />
       <Hero />

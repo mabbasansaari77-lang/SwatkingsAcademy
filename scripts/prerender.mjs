@@ -141,7 +141,7 @@ const link = (p) => (siteUrl ? `${siteUrl}${p}` : p);
 const lines = [
   `# ${settings.academy_name}`,
   '',
-  '> Cricket academy in Swat, Khyber Pakhtunkhwa, Pakistan, offering coaching for beginners, youth and developing cricketers. Players can register online; approved players get a public profile with consent.',
+  '> Cricket academy in Takhtaband, Mingora, Swat, Khyber Pakhtunkhwa, Pakistan, offering cricket coaching and training for juniors, youth and adults. Players can register online; approved players get a public profile with consent.',
   '',
 ];
 const contact = [

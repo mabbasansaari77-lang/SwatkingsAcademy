@@ -16,7 +16,7 @@ export default function News() {
     <>
       <Seo
         title="News and Announcements"
-        description="Latest news, trial dates and training announcements from Swat Kings Cricket Academy."
+        description="Latest news, admissions and training announcements from Swat Kings Cricket Academy, the cricket academy in Mingora, Swat."
       />
       <PageHeader
         page="news" title="News and announcements" intro="Trial dates, training updates and academy news." />

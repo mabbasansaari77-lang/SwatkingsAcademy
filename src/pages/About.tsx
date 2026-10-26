@@ -15,7 +15,7 @@ export default function About() {
     <>
       <Seo
         title="About the Academy"
-        description="Learn about Swat Kings Cricket Academy, youth cricket coaching in Swat focused on skill, discipline, confidence and teamwork."
+        description="About Swat Kings Cricket Academy, a cricket academy and club in Takhtaband, Mingora, Swat offering junior and youth cricket coaching."
       />
       <PageHeader
         page="about"

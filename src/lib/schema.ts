@@ -14,8 +14,8 @@ export function organizationSchema(s: SiteSettings): Record<string, unknown> {
     '@type': 'SportsOrganization',
     name: s.academy_name,
     sport: 'Cricket',
-    description: 'Cricket academy in Swat offering coaching for beginners, youth and developing players.',
-    areaServed: { '@type': 'Place', name: 'Swat, Khyber Pakhtunkhwa, Pakistan' },
+    description: 'Cricket academy in Mingora, Swat (Takhtaband) offering cricket coaching and training for juniors, youth and adults.',
+    areaServed: { '@type': 'Place', name: 'Mingora, Swat, Khyber Pakhtunkhwa, Pakistan' },
   };
   const url = absoluteUrl('/');
   if (url) {

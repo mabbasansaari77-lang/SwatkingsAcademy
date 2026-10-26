@@ -25,8 +25,8 @@ export default function Programmes() {
   return (
     <>
       <Seo
-        title="Coaching Programmes"
-        description="Cricket training programmes in Swat for beginners, intermediate and advanced players, plus batting, bowling, wicketkeeping, fielding and fitness sessions."
+        title="Cricket Coaching Programmes in Swat"
+        description="Cricket coaching and cricket training in Swat: junior and youth cricket coaching, batting, bowling, wicketkeeping, fielding and fitness at our Mingora academy."
       />
       <PageHeader
         page="programmes"

@@ -19,7 +19,7 @@ interface SeoProps {
  */
 export function Seo({ title, description, image, type = 'website', noindex }: SeoProps) {
   const { pathname } = useLocation();
-  const fullTitle = title === SITE_NAME ? `${SITE_NAME} | Cricket Coaching in Swat` : `${title} | ${SITE_NAME}`;
+  const fullTitle = title === SITE_NAME ? `${SITE_NAME} | Cricket Academy in Mingora, Swat` : `${title} | ${SITE_NAME}`;
   const canonical = SITE_URL ? `${SITE_URL}${pathname === '/' ? '' : pathname}` : null;
   const ogImage = image ?? (SITE_URL ? `${SITE_URL}/og-image.png` : '/og-image.png');
   const crumbs =

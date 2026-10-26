@@ -26,7 +26,7 @@ export default function Fixtures() {
     <>
       <Seo
         title="Fixtures and Results"
-        description="Upcoming matches and results for Swat Kings Cricket Academy teams, including tournaments, venues and scorecard summaries."
+        description="Upcoming cricket matches and results for Swat Kings Cricket Academy teams in Swat, including tournaments, venues and scorecards."
       />
       {upcoming.data && fixtureSchemas(upcoming.data, settings.academy_name).length > 0 && (
         <JsonLd data={fixtureSchemas(upcoming.data, settings.academy_name)} />

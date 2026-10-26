@@ -11,7 +11,7 @@ export default function Coaches() {
     <>
       <Seo
         title="Coaches"
-        description="Meet the coaches at Swat Kings Cricket Academy, providing youth cricket coaching in Swat."
+        description="Meet the coaches providing junior and youth cricket coaching at Swat Kings Cricket Academy, Mingora, Swat."
       />
       <PageHeader
         page="coaches"

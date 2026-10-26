@@ -15,7 +15,7 @@ export default function Faq() {
     <>
       <Seo
         title="Frequently Asked Questions"
-        description="Answers to common questions about Swat Kings Cricket Academy: age groups, training and player registration."
+        description="Cricket academy admission and fees in Swat, training days, age groups and player registration at Swat Kings Cricket Academy, Mingora."
       />
       {schema && <JsonLd data={schema} />}
       <PageHeader title="Frequently asked questions" intro="Quick answers about training, registration and joining the academy." />

@@ -16,7 +16,7 @@ export default function Gallery() {
     <>
       <Seo
         title="Photo and Video Gallery"
-        description="Photos and videos from training sessions, matches and events at Swat Kings Cricket Academy."
+        description="Photos and videos of cricket training, matches and events at Swat Kings Cricket Academy, Takhtaband, Mingora, Swat."
       />
       <PageHeader
         page="gallery" title="Gallery" intro="Photos and videos from training, matches and academy events." />

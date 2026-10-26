@@ -557,7 +557,7 @@ export default function Register() {
     <>
       <Seo
         title="Player Registration"
-        description="Player registration for Swat Kings Cricket Academy in Swat. Register with your photo and cricket details; approved players appear on the academy players page."
+        description="Cricket academy admission in Swat: register as a player at Swat Kings Cricket Academy, Mingora, with your photo and cricket details."
       />
       <PageHeader
         page="register"
