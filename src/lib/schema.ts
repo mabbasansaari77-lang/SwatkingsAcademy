@@ -11,7 +11,8 @@ export function organizationSchema(s: SiteSettings): Record<string, unknown> {
   const sameAs = [s.facebook_url, s.instagram_url, s.youtube_url, s.tiktok_url].filter(Boolean);
   const data: Record<string, unknown> = {
     '@context': 'https://schema.org',
-    '@type': 'SportsOrganization',
+    // SportsActivityLocation is a LocalBusiness type, which helps local and map results.
+    '@type': ['SportsOrganization', 'SportsActivityLocation'],
     name: s.academy_name,
     sport: 'Cricket',
     alternateName: ['Swat Kings', 'Swat Kings Cricket Club'],

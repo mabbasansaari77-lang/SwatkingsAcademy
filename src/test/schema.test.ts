@@ -5,7 +5,7 @@ import { faqSchema, organizationSchema } from '../lib/schema';
 describe('Structured data', () => {
   it('never invents contact details: empty settings produce no address, phone or email', () => {
     const org = organizationSchema(DEFAULT_SETTINGS);
-    expect(org['@type']).toBe('SportsOrganization');
+    expect(org['@type']).toEqual(['SportsOrganization', 'SportsActivityLocation']);
     expect(org.sport).toBe('Cricket');
     expect(org).not.toHaveProperty('address');
     expect(org).not.toHaveProperty('telephone');

@@ -17,7 +17,7 @@ export default function About() {
     <>
       <Seo
         title="About Our Cricket Academy in Swat"
-        description="About Swat Kings Cricket Academy, a cricket academy and cricket club in Takhtaband, Mingora, Swat, Khyber Pakhtunkhwa, offering cricket coaching for kids, youth and adults."
+        description="Swat Kings Cricket Academy is a cricket academy and club in Takhtaband, Mingora, Swat, KPK, offering cricket coaching for kids, youth and adults."
       />
       <JsonLd data={organizationSchema(settings)} />
       <PageHeader

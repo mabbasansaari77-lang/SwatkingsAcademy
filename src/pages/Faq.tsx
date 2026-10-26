@@ -15,7 +15,7 @@ export default function Faq() {
     <>
       <Seo
         title="Cricket Academy Admission, Fees and Trials FAQ"
-        description="Answers on cricket academy admission and fees in Swat, how to join, cricket trials, training days, age groups and player registration at Swat Kings Cricket Academy, Mingora."
+        description="Cricket academy admission and fees in Swat, how to join, cricket trials, training days and age groups at Swat Kings Cricket Academy, Mingora."
       />
       {schema && <JsonLd data={schema} />}
       <PageHeader title="Cricket academy FAQ" intro="Quick answers about admission, fees, trials, training and how to join our cricket academy in Swat." />
