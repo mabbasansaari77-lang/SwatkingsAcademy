@@ -45,7 +45,7 @@ export default function NewsArticle() {
         type="article"
       />
       <JsonLd data={articleSchema(article, settings.academy_name, cover)} />
-      <header className="bg-navy-900 text-crease">
+      <header className="tech-surface text-crease">
         <Container className="max-w-3xl py-14">
           <Link to="/news" className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-300 hover:text-accent-500">
             <ArrowLeft className="h-4 w-4" aria-hidden="true" /> All news

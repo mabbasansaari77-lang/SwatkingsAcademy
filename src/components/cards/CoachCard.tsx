@@ -19,7 +19,7 @@ function Initials({ name }: { name: string }) {
 export function CoachCard({ coach, compact = false }: { coach: Coach; compact?: boolean }) {
   const photo = mediaUrl(coach.photo_url);
   return (
-    <article className="flex h-full flex-col overflow-hidden bg-white shadow-[0_1px_0_rgb(0_0_0/0.06)]">
+    <article className="card-tech group flex h-full flex-col">
       <div className="aspect-[4/5] w-full overflow-hidden bg-navy-900">
         {photo ? (
           <img
@@ -29,7 +29,7 @@ export function CoachCard({ coach, compact = false }: { coach: Coach; compact?: 
             decoding="async"
             width={480}
             height={600}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
           />
         ) : (
           <Initials name={coach.name} />

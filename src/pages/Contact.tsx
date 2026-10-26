@@ -44,7 +44,7 @@ function ContactDetails() {
   ].filter(Boolean) as { icon: typeof MapPin; label: string; body: ReactNode }[];
 
   return (
-    <aside className="self-start bg-navy-900 p-7 text-crease">
+    <aside className="tech-surface self-start overflow-hidden rounded-2xl p-7 text-crease">
       <h2 className="text-3xl font-extrabold">Academy details</h2>
       {rows.length ? (
         <dl className="mt-6 space-y-5">

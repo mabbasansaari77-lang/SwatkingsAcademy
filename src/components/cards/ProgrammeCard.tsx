@@ -24,7 +24,7 @@ export function ProgrammeTile({ programme }: { programme: Programme }) {
   return (
     <Link
       to={`/programmes#${programme.slug}`}
-      className="group flex h-full flex-col border-t-4 border-navy-800 bg-white p-6 shadow-[0_1px_0_rgb(0_0_0/0.06)] transition-colors hover:border-accent-500"
+      className="card-tech group flex h-full flex-col p-6"
     >
       <span className="text-sm font-semibold text-sky-500">{labelFor(PROGRAMME_CATEGORIES, programme.category)}</span>
       <h3 className="mt-2 text-3xl font-extrabold text-navy-900 group-hover:text-navy-700">{programme.name}</h3>

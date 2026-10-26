@@ -29,25 +29,36 @@ import {
 import { useSettings } from '../lib/settings';
 import { useAsync } from '../lib/useAsync';
 import { DEFAULT_INTRO, PILLARS } from '../lib/content';
+import { CountUp } from '../components/ui/CountUp';
+import { useReveal } from '../lib/motion';
 import type { ReactNode } from 'react';
 
 function Hero() {
   const { settings } = useSettings();
   const banner = useBanner('home');
   return (
-    <section aria-labelledby="hero-heading" className="relative isolate overflow-hidden bg-navy-900 text-crease">
+    <section aria-labelledby="hero-heading" className="relative isolate overflow-hidden bg-space-950 text-crease">
       {banner ? <BannerMedia banner={banner} /> : <HeroArt />}
-      <div className="absolute inset-0 -z-0 bg-gradient-to-r from-navy-950/85 via-navy-900/45 to-transparent" aria-hidden="true" />
+      <div className="absolute inset-0 -z-0 bg-gradient-to-r from-space-950/90 via-space-950/50 to-transparent" aria-hidden="true" />
       <Container className="relative flex min-h-[calc(100svh-4.5rem)] flex-col justify-center py-20">
         <div className="max-w-3xl">
+          {settings.registration_open && (
+            <Link
+              to="/register"
+              className="glass animate-rise mb-6 inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-sm font-semibold text-sky-100 transition-colors hover:border-neon hover:text-white"
+            >
+              <span className="live-dot" aria-hidden="true" />
+              Admissions open: register for trials
+            </Link>
+          )}
           <h1
             id="hero-heading"
             className="animate-rise text-[clamp(3.25rem,10vw,7.5rem)] font-black uppercase leading-[0.88] tracking-tight"
           >
-            <span className="mb-4 block font-sans text-base font-bold normal-case tracking-normal text-accent-300 sm:text-lg">
+            <span className="tech-label mb-4 block text-accent-300 sm:text-sm">
               {settings.academy_name} · Cricket academy in Swat, Mingora
             </span>
-            {settings.hero_headline}
+            <span className="text-hologram neon-glow block">{settings.hero_headline}</span>
           </h1>
           <p className="animate-rise mt-6 max-w-xl text-lg text-crease/85 sm:text-xl" style={{ animationDelay: '0.12s' }}>
             {settings.hero_subheading}
@@ -60,15 +71,51 @@ function Hero() {
               Explore Training
             </LinkButton>
           </div>
+          <ul className="animate-rise mt-10 hidden flex-wrap gap-2.5 text-sm text-sky-100/90 sm:flex" style={{ animationDelay: '0.36s' }}>
+            {HERO_CHIPS.map((c) => (
+              <li key={c} className="glass rounded-md px-3 py-1.5">
+                {c}
+              </li>
+            ))}
+          </ul>
         </div>
         <a
           href="#intro"
           className="absolute bottom-8 left-4 hidden items-center gap-2 text-sm text-crease/70 hover:text-crease sm:left-6 sm:flex lg:left-8"
         >
-          <ArrowDown className="h-4 w-4" aria-hidden="true" /> Learn about the academy
+          <ArrowDown className="animate-float h-4 w-4" aria-hidden="true" /> Learn about the academy
         </a>
       </Container>
     </section>
+  );
+}
+
+const HERO_CHIPS = ['Kids, youth and adults', 'Batting · Bowling · Fielding', 'Takhtaband, Mingora, Swat'];
+
+const TICKER = [
+  'Cricket academy in Swat',
+  'Junior cricket coaching',
+  'Youth and adult training',
+  'Batting, bowling and fielding',
+  'Cricket club in Takhtaband, Mingora',
+  'Admission and trials',
+];
+
+/** Scrolling keyword strip under the hero. Decorative: the same words appear elsewhere on the page. */
+function Ticker() {
+  const row = TICKER.map((t) => (
+    <span key={t} className="flex items-center gap-6 px-6">
+      <span>{t}</span>
+      <span className="h-1.5 w-1.5 rotate-45 bg-neon" />
+    </span>
+  ));
+  return (
+    <div className="marquee overflow-hidden border-y border-neon/30 bg-space-900 py-3 text-sky-100" aria-hidden="true">
+      <div className="marquee-track tech-label whitespace-nowrap">
+        {row}
+        {row}
+      </div>
+    </div>
   );
 }
 
@@ -101,13 +148,15 @@ function Intro() {
           </Link>
         </div>
         {stats.length > 0 && (
-          <dl className="grid grid-cols-3 gap-4 border-l-4 border-accent-500 pl-6 lg:grid-cols-1">
+          <dl className="grid grid-cols-3 gap-3 lg:grid-cols-1">
             {stats.map((s) => (
-              <div key={s.label}>
+              <div key={s.label} className="card-tech px-4 py-4 sm:px-5">
                 <dt className="sr-only">{s.label}</dt>
                 <dd>
-                  <span className="block font-display text-5xl font-black text-navy-800">{s.n}</span>
-                  <span className="text-charcoal-600">{s.label}</span>
+                  <span className="block font-tech text-4xl font-bold text-navy-800 sm:text-5xl">
+                    <CountUp value={s.n} />
+                  </span>
+                  <span className="text-sm text-charcoal-600 sm:text-base">{s.label}</span>
                 </dd>
               </div>
             ))}
@@ -163,10 +212,13 @@ function Philosophy() {
           ))}
         </div>
       )}
-      <ul className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
-        {PILLARS.map((p) => (
-          <li key={p.title} className="border-l-2 border-accent-500 pl-5">
-            <h3 className="text-3xl font-extrabold text-accent-300">{p.title}</h3>
+      <ul className="grid gap-5 sm:grid-cols-2">
+        {PILLARS.map((p, i) => (
+          <li key={p.title} className="card-glass p-6">
+            <span className="tech-label text-neon" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 className="mt-2 text-3xl font-extrabold text-accent-300">{p.title}</h3>
             <p className="mt-2 text-sky-100/85">{p.text}</p>
           </li>
         ))}
@@ -203,9 +255,10 @@ function Coaches() {
 function Matches() {
   const upcoming = useAsync(() => fetchUpcomingFixtures(3), [], 'home:upcoming');
   const past = useAsync(() => fetchPastFixtures(3), [], 'home:past');
+  const ref = useReveal<HTMLElement>();
   if (!upcoming.data?.length && !past.data?.length) return null;
   return (
-    <section aria-labelledby="matches-heading" className="bg-navy-950 py-16 text-crease sm:py-20">
+    <section ref={ref} aria-labelledby="matches-heading" className="tech-surface py-16 text-crease sm:py-20">
       <Container>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <h2 id="matches-heading" className="text-4xl font-extrabold sm:text-5xl">
@@ -215,7 +268,7 @@ function Matches() {
             Full fixture list
           </LinkButton>
         </div>
-        <div className="crease-line mt-6 mb-10 text-crease/30" aria-hidden="true" />
+        <div className="glow-line mt-6 mb-10" aria-hidden="true" />
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
             <h3 className="mb-4 text-2xl font-bold text-accent-300">Upcoming</h3>
@@ -329,9 +382,13 @@ function SiteSchema() {
 function RegisterCta() {
   const { settings } = useSettings();
   return (
-    <section aria-labelledby="cta-heading" className="relative overflow-hidden bg-accent-500 text-charcoal-950">
-      <svg aria-hidden="true" viewBox="0 0 200 200" className="absolute -right-10 -top-10 h-72 w-72 text-sky-100 sm:right-10">
-        <circle cx="100" cy="100" r="90" fill="currentColor" />
+    <section
+      aria-labelledby="cta-heading"
+      className="animate-gradient relative overflow-hidden bg-[linear-gradient(120deg,#7dd3fc,#38bdf8,#bae6fd,#7dd3fc)] text-charcoal-950"
+    >
+      <svg aria-hidden="true" viewBox="0 0 200 200" className="animate-float absolute -right-10 -top-10 hidden h-72 w-72 text-sky-100 sm:block sm:right-10">
+        <circle cx="100" cy="100" r="90" fill="currentColor" opacity="0.85" />
+        <circle cx="100" cy="100" r="98" fill="none" stroke="#0369a1" strokeOpacity="0.4" strokeWidth="1.5" strokeDasharray="4 8" />
         <path d="M60 40 Q100 100 60 160 M140 40 Q100 100 140 160" stroke="#0369a1" strokeWidth="3" fill="none" strokeDasharray="6 6" />
       </svg>
       <Container className="relative flex flex-col items-start gap-6 py-16 md:flex-row md:items-center md:justify-between">
@@ -410,6 +467,7 @@ export default function Home() {
       />
       <SiteSchema />
       <Hero />
+      <Ticker />
       <Intro />
       <Programmes />
       <Philosophy />
