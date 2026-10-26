@@ -5,6 +5,7 @@ import Dashboard from './Dashboard';
 import GalleryAdmin from './GalleryAdmin';
 import Login from './Login';
 import Messages from './Messages';
+import PageBannersAdmin from './PageBannersAdmin';
 import PlayerMediaAdmin from './PlayerMediaAdmin';
 import Registrations from './Registrations';
 import { RequireAdmin } from './RequireAdmin';
@@ -33,6 +34,7 @@ export default function AdminRoutes() {
           ))}
           <Route path="players/:id/media" element={<PlayerMediaAdmin />} />
           <Route path="gallery" element={<GalleryAdmin />} />
+          <Route path="banners" element={<PageBannersAdmin />} />
           <Route path="settings" element={<SettingsAdmin />} />
           <Route path="*" element={<p className="p-8">This admin page does not exist.</p>} />
         </Route>

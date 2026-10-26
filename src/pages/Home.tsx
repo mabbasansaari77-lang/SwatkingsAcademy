@@ -6,6 +6,8 @@ import { FixtureBoard, ResultBoard } from '../components/cards/FixtureCards';
 import { GalleryGrid } from '../components/cards/GalleryGrid';
 import { ProgrammeTile } from '../components/cards/ProgrammeCard';
 import { HeroArt } from '../components/graphics/HeroArt';
+import { BannerMedia } from '../components/ui/BannerMedia';
+import { useBanner } from '../lib/banners';
 import { LinkButton } from '../components/ui/Button';
 import { Container, Section } from '../components/ui/Section';
 import { Seo } from '../components/ui/Seo';
@@ -14,7 +16,7 @@ import { paragraphs, telLink, whatsappLink } from '../lib/format';
 import {
   fetchAnnouncements,
   fetchCoaches,
-  fetchGallery,
+  fetchHomeGallery,
   fetchPastFixtures,
   fetchProgrammes,
   fetchPublicCounts,
@@ -27,9 +29,10 @@ import type { ReactNode } from 'react';
 
 function Hero() {
   const { settings } = useSettings();
+  const banner = useBanner('home');
   return (
     <section aria-labelledby="hero-heading" className="relative isolate overflow-hidden bg-navy-900 text-crease">
-      <HeroArt />
+      {banner ? <BannerMedia banner={banner} /> : <HeroArt />}
       <div className="absolute inset-0 -z-0 bg-gradient-to-r from-navy-950/85 via-navy-900/45 to-transparent" aria-hidden="true" />
       <Container className="relative flex min-h-[calc(100svh-4.5rem)] flex-col justify-center py-20">
         <div className="max-w-3xl">
@@ -242,7 +245,7 @@ function Matches() {
 }
 
 function GalleryPreview() {
-  const state = useAsync(() => fetchGallery(8));
+  const state = useAsync(() => fetchHomeGallery(8));
   if (!state.data?.length) return null;
   return (
     <Section

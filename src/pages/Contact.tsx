@@ -103,7 +103,8 @@ export default function Contact() {
         title="Contact Us"
         description="Contact Swat Kings Cricket Academy about cricket coaching in Swat, trials and training programmes."
       />
-      <PageHeader title="Contact us" intro="Questions about trials, programmes or training times? Send us a message." />
+      <PageHeader
+        page="contact" title="Contact us" intro="Questions about trials, programmes or training times? Send us a message." />
       <Container className="grid gap-10 py-12 lg:grid-cols-[1.5fr_1fr]">
         <div>
           {sent ? (

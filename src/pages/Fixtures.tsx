@@ -25,6 +25,7 @@ export default function Fixtures() {
         description="Upcoming matches and results for Swat Kings Cricket Academy teams, including tournaments, venues and scorecard summaries."
       />
       <PageHeader
+        page="fixtures"
         title="Fixtures and results"
         intro="Match dates, venues and results entered by the academy after each game. Live scores are not available."
       />

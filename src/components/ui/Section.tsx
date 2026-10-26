@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react';
+import { useBanner, type BannerPage } from '../../lib/banners';
+import { BannerMedia } from './BannerMedia';
 
 export function Container({ children, className = '' }: { children: ReactNode; className?: string }) {
   return <div className={`mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 ${className}`}>{children}</div>;
@@ -48,23 +50,31 @@ export function Section({ id, title, intro, action, tone = 'light', children, cl
   );
 }
 
-/** Header band for inner pages. */
-export function PageHeader({ title, intro }: { title: string; intro?: ReactNode }) {
+/** Header band for inner pages. Shows the page's banner photo/video when one is set in the admin. */
+export function PageHeader({ title, intro, page }: { title: string; intro?: ReactNode; page?: BannerPage }) {
+  const banner = useBanner(page);
   return (
-    <div className="relative overflow-hidden bg-navy-900 text-crease">
-      <svg
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-24 top-1/2 h-[140%] -translate-y-1/2 text-navy-700/60"
-        viewBox="0 0 400 400"
-        fill="none"
-      >
-        <circle cx="200" cy="200" r="190" stroke="currentColor" strokeWidth="2" />
-        <circle cx="200" cy="200" r="120" stroke="currentColor" strokeWidth="2" strokeDasharray="6 10" />
-        <rect x="186" y="110" width="28" height="180" stroke="currentColor" strokeWidth="2" />
-      </svg>
-      <Container className="relative py-14 sm:py-20">
-        <h1 className="max-w-3xl text-5xl font-black uppercase sm:text-6xl lg:text-7xl">{title}</h1>
-        {intro && <p className="mt-4 max-w-2xl text-lg text-sky-100/90 sm:text-xl">{intro}</p>}
+    <div className="relative isolate overflow-hidden bg-navy-900 text-crease">
+      {banner ? (
+        <>
+          <BannerMedia banner={banner} />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-900/70 to-navy-900/30" aria-hidden="true" />
+        </>
+      ) : (
+        <svg
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-24 top-1/2 h-[140%] -translate-y-1/2 text-navy-700/60"
+          viewBox="0 0 400 400"
+          fill="none"
+        >
+          <circle cx="200" cy="200" r="190" stroke="currentColor" strokeWidth="2" />
+          <circle cx="200" cy="200" r="120" stroke="currentColor" strokeWidth="2" strokeDasharray="6 10" />
+          <rect x="186" y="110" width="28" height="180" stroke="currentColor" strokeWidth="2" />
+        </svg>
+      )}
+      <Container className={`relative ${banner ? 'py-20 sm:py-28' : 'py-14 sm:py-20'}`}>
+        <h1 className="max-w-3xl text-5xl font-black uppercase drop-shadow-sm sm:text-6xl lg:text-7xl">{title}</h1>
+        {intro && <p className="mt-4 max-w-2xl text-lg text-sky-100/95 sm:text-xl">{intro}</p>}
         <div className="crease-line mt-8 max-w-xs text-accent-500" aria-hidden="true" />
       </Container>
     </div>

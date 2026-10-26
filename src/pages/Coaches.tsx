@@ -14,6 +14,7 @@ export default function Coaches() {
         description="Meet the coaches at Swat Kings Cricket Academy, providing youth cricket coaching in Swat."
       />
       <PageHeader
+        page="coaches"
         title="Our coaches"
         intro="The people who run our sessions. Qualifications are listed only after the academy has verified them."
       />

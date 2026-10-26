@@ -158,6 +158,7 @@ export interface GalleryItem {
   storage_path: string | null;
   youtube_id: string | null;
   is_published: boolean;
+  featured?: boolean;
   sort_order: number;
   created_at: string;
 }

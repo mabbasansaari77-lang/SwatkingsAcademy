@@ -1,4 +1,4 @@
-import { Eye, EyeOff, Loader2, Pencil, Play, Trash2, Upload, X } from 'lucide-react';
+import { Eye, EyeOff, Home, Loader2, Pencil, Play, Trash2, Upload, X } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
 import { Button } from '../components/ui/Button';
 import { ErrorState, Loading } from '../components/ui/States';
@@ -21,6 +21,7 @@ interface FormState {
   category: GalleryItem['category'];
   sort_order: string;
   is_published: boolean;
+  featured: boolean;
 }
 
 const EMPTY_FORM: FormState = {
@@ -33,6 +34,7 @@ const EMPTY_FORM: FormState = {
   category: 'training',
   sort_order: '0',
   is_published: true,
+  featured: false,
 };
 
 function ItemForm({ item, onDone, onCancel }: { item: GalleryItem | null; onDone: (text: string) => void; onCancel: () => void }) {
@@ -48,6 +50,7 @@ function ItemForm({ item, onDone, onCancel }: { item: GalleryItem | null; onDone
           category: item.category,
           sort_order: String(item.sort_order),
           is_published: item.is_published,
+          featured: Boolean(item.featured),
         }
       : EMPTY_FORM,
   );
@@ -68,6 +71,7 @@ function ItemForm({ item, onDone, onCancel }: { item: GalleryItem | null; onDone
       category: form.category,
       sort_order: Number.parseInt(form.sort_order, 10) || 0,
       is_published: form.is_published,
+      featured: form.featured,
     };
 
     setBusy(true);
@@ -202,6 +206,10 @@ function ItemForm({ item, onDone, onCancel }: { item: GalleryItem | null; onDone
             <input type="checkbox" className="h-5 w-5 accent-navy-800" checked={form.is_published} onChange={(e) => set('is_published', e.target.checked)} />
             <span className="font-semibold">Show on website</span>
           </label>
+          <label className="flex items-center gap-3 self-end pb-2">
+            <input type="checkbox" className="h-5 w-5 accent-navy-800" checked={form.featured} onChange={(e) => set('featured', e.target.checked)} />
+            <span className="font-semibold">Show on home page</span>
+          </label>
         </div>
 
         {error && <NoticeBar notice={{ kind: 'error', text: error }} />}
@@ -230,6 +238,12 @@ export default function GalleryAdmin() {
       .limit(500);
     return unwrap(res) as GalleryItem[];
   });
+
+  const toggleFeatured = async (item: GalleryItem) => {
+    const res = await requireSupabase().from('gallery_items').update({ featured: !item.featured }).eq('id', item.id).select('id');
+    if (res.error || !res.data?.length) setNotice({ kind: 'error', text: friendlyDbError(res.error?.message ?? 'permission denied') });
+    else list.reload();
+  };
 
   const togglePublished = async (item: GalleryItem) => {
     const res = await requireSupabase().from('gallery_items').update({ is_published: !item.is_published }).eq('id', item.id).select('id');
@@ -306,6 +320,11 @@ export default function GalleryAdmin() {
                       <Play className="h-3 w-3" aria-hidden="true" /> Video
                     </span>
                   )}
+                  {item.featured && (
+                    <span className="absolute bottom-2 left-2 inline-flex items-center gap-1 rounded bg-navy-900 px-2 py-0.5 text-xs font-bold text-crease">
+                      <Home className="h-3 w-3" aria-hidden="true" /> Home page
+                    </span>
+                  )}
                   {!item.is_published && (
                     <span className="absolute right-2 top-2 rounded bg-accent-500 px-2 py-0.5 text-xs font-bold text-charcoal-950">Hidden</span>
                   )}
@@ -316,6 +335,10 @@ export default function GalleryAdmin() {
                   <div className="mt-2 flex flex-wrap gap-1 text-sm">
                     <button type="button" onClick={() => setEditing(item)} className="inline-flex items-center gap-1 rounded px-2 py-1 font-semibold text-navy-800 hover:bg-navy-800/10">
                       <Pencil className="h-3.5 w-3.5" aria-hidden="true" /> Edit
+                    </button>
+                    <button type="button" onClick={() => void toggleFeatured(item)} className="inline-flex items-center gap-1 rounded px-2 py-1 font-semibold text-navy-800 hover:bg-navy-800/10">
+                      <Home className="h-3.5 w-3.5" aria-hidden="true" />
+                      {item.featured ? 'Remove from home' : 'Show on home'}
                     </button>
                     <button type="button" onClick={() => void togglePublished(item)} className="inline-flex items-center gap-1 rounded px-2 py-1 font-semibold text-navy-800 hover:bg-navy-800/10">
                       {item.is_published ? <EyeOff className="h-3.5 w-3.5" aria-hidden="true" /> : <Eye className="h-3.5 w-3.5" aria-hidden="true" />}

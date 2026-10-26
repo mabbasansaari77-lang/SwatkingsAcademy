@@ -29,6 +29,7 @@ export default function Programmes() {
         description="Cricket training programmes in Swat for beginners, intermediate and advanced players, plus batting, bowling, wicketkeeping, fielding and fitness sessions."
       />
       <PageHeader
+        page="programmes"
         title="Coaching programmes"
         intro="Choose a programme that matches the player’s level, or focus on a specific skill. Every programme lists its age group, schedule and availability."
       />

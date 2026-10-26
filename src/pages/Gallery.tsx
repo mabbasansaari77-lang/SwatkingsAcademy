@@ -18,7 +18,8 @@ export default function Gallery() {
         title="Photo and Video Gallery"
         description="Photos and videos from training sessions, matches and events at Swat Kings Cricket Academy."
       />
-      <PageHeader title="Gallery" intro="Photos and videos from training, matches and academy events." />
+      <PageHeader
+        page="gallery" title="Gallery" intro="Photos and videos from training, matches and academy events." />
       <Container className="py-12">
         <AsyncBlock
           state={state}

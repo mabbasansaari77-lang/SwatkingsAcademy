@@ -18,7 +18,8 @@ export default function News() {
         title="News and Announcements"
         description="Latest news, trial dates and training announcements from Swat Kings Cricket Academy."
       />
-      <PageHeader title="News and announcements" intro="Trial dates, training updates and academy news." />
+      <PageHeader
+        page="news" title="News and announcements" intro="Trial dates, training updates and academy news." />
       <Container className="py-12">
         <AsyncBlock
           state={state}

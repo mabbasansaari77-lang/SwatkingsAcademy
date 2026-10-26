@@ -3,6 +3,7 @@ import {
   ClipboardList,
   ExternalLink,
   Image,
+  ImageUp,
   Inbox,
   LayoutDashboard,
   LogOut,
@@ -32,6 +33,7 @@ const NAV = [
   { to: '/admin/results', label: 'Results', icon: Trophy },
   { to: '/admin/announcements', label: 'Announcements', icon: Megaphone },
   { to: '/admin/gallery', label: 'Gallery', icon: Image },
+  { to: '/admin/banners', label: 'Page banners', icon: ImageUp },
   { to: '/admin/settings', label: 'Website settings', icon: Settings },
 ];
 

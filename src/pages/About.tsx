@@ -18,6 +18,7 @@ export default function About() {
         description="Learn about Swat Kings Cricket Academy, youth cricket coaching in Swat focused on skill, discipline, confidence and teamwork."
       />
       <PageHeader
+        page="about"
         title="About the academy"
         intro="Who we are, what we believe in, and how we help cricketers in Swat develop their game."
       />

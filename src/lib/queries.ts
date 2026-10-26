@@ -130,6 +130,22 @@ export async function fetchGallery(limit?: number): Promise<GalleryItem[]> {
   return unwrap(await q) as GalleryItem[];
 }
 
+/** Home page media: items marked "Show on home page", or the latest items if none are marked. */
+export async function fetchHomeGallery(limit = 8): Promise<GalleryItem[]> {
+  const client = requireSupabase();
+  const featured = unwrap(
+    await client
+      .from('gallery_items')
+      .select('*')
+      .eq('is_published', true)
+      .eq('featured', true)
+      .order('sort_order')
+      .order('created_at', { ascending: false })
+      .limit(limit),
+  ) as GalleryItem[];
+  return featured.length ? featured : fetchGallery(limit);
+}
+
 export interface PublicCounts {
   programmes: number;
   coaches: number;

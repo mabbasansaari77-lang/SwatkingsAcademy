@@ -56,7 +56,8 @@ export default function Teams() {
         title="Players and Teams"
         description="Teams and age groups at Swat Kings Cricket Academy, with approved player profiles."
       />
-      <PageHeader title="Players and teams" intro="Our squads and age groups." />
+      <PageHeader
+        page="teams" title="Players and teams" intro="Our squads and age groups." />
       <Container className="py-12">
         <p className="mb-8 flex max-w-2xl items-start gap-2 text-sm text-charcoal-600">
           <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-navy-600" aria-hidden="true" />

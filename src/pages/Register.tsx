@@ -359,6 +359,7 @@ export default function Register() {
         description="Register for cricket trials at Swat Kings Cricket Academy. Cricket training for beginners and youth players in Swat."
       />
       <PageHeader
+        page="register"
         title="Register for trials"
         intro="Tell us about the player and we will contact you with trial dates and the next steps. There is no payment online."
       />

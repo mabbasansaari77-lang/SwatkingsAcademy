@@ -5,7 +5,7 @@ export const VIDEO_TYPES = ['video/mp4', 'video/webm'];
 export const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
 export const MAX_VIDEO_BYTES = 25 * 1024 * 1024; // 25 MB (bucket hard limit)
 
-export type MediaFolder = 'gallery' | 'coaches' | 'news' | 'players';
+export type MediaFolder = 'gallery' | 'coaches' | 'news' | 'players' | 'pages';
 
 const EXTENSIONS: Record<string, string> = {
   'image/jpeg': 'jpg',
