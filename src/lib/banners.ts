@@ -11,7 +11,7 @@ export const BANNER_PAGES = [
   { value: 'fixtures', label: 'Fixtures and results' },
   { value: 'news', label: 'News' },
   { value: 'gallery', label: 'Gallery' },
-  { value: 'register', label: 'Register for trials' },
+  { value: 'register', label: 'Player registration' },
   { value: 'contact', label: 'Contact' },
 ] as const;
 

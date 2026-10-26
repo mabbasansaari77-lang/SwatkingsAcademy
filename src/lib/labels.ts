@@ -103,3 +103,20 @@ export function labelFor(options: readonly Option[], value: string | null | unde
   if (!value) return '';
   return options.find((o) => o.value === value)?.label ?? value;
 }
+
+export const BATTING_STYLES = [
+  { value: 'Right-hand bat', label: 'Right-hand bat' },
+  { value: 'Left-hand bat', label: 'Left-hand bat' },
+] as const;
+
+export const BOWLING_STYLES = [
+  { value: 'Right-arm fast', label: 'Right-arm fast' },
+  { value: 'Right-arm medium', label: 'Right-arm medium' },
+  { value: 'Right-arm off-spin', label: 'Right-arm off-spin' },
+  { value: 'Right-arm leg-spin', label: 'Right-arm leg-spin' },
+  { value: 'Left-arm fast', label: 'Left-arm fast' },
+  { value: 'Left-arm medium', label: 'Left-arm medium' },
+  { value: 'Left-arm orthodox spin', label: 'Left-arm orthodox spin' },
+  { value: 'Left-arm wrist-spin', label: 'Left-arm wrist-spin' },
+  { value: 'Does not bowl', label: 'Does not bowl' },
+] as const;

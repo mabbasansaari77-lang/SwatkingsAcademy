@@ -190,6 +190,14 @@ export interface Registration {
   privacy_acknowledged: boolean;
   status: RegistrationStatus;
   admin_notes: string | null;
+  playing_role: string | null;
+  batting_style: string | null;
+  bowling_style: string | null;
+  achievements: string | null;
+  about_player: string | null;
+  photo_paths: string[] | null;
+  public_profile_consent: boolean | null;
+  player_profile_id: string | null;
   created_at: string;
   programme?: { name: string } | null;
 }

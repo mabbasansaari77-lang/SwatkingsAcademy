@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AGE_GROUPS, EXPERIENCE_LEVELS, SCHEDULES } from './labels';
+import { AGE_GROUPS, BATTING_STYLES, BOWLING_STYLES, EXPERIENCE_LEVELS, PLAYING_ROLES, SCHEDULES } from './labels';
 
 // These rules mirror the server-side checks in
 // supabase/migrations/20261025000003_public_submission_functions.sql.
@@ -48,6 +48,21 @@ export const registrationSchema = z
       errorMap: () => ({ message: 'Choose a preferred schedule.' }),
     }),
     additional_info: optionalText(1500, 'Keep this under 1500 characters.'),
+    playing_role: z
+      .union([z.enum(values(PLAYING_ROLES)), z.literal('')])
+      .optional()
+      .transform((v) => (v ? v : undefined)),
+    batting_style: z
+      .union([z.enum(values(BATTING_STYLES)), z.literal('')])
+      .optional()
+      .transform((v) => (v ? v : undefined)),
+    bowling_style: z
+      .union([z.enum(values(BOWLING_STYLES)), z.literal('')])
+      .optional()
+      .transform((v) => (v ? v : undefined)),
+    achievements: optionalText(2000, 'Keep this under 2000 characters.'),
+    about_player: optionalText(1000, 'Keep this under 1000 characters.'),
+    public_profile_consent: z.boolean().default(false),
     guardian_consent: z.boolean().default(false),
     privacy_acknowledged: z.literal(true, {
       errorMap: () => ({ message: 'Confirm you have read the privacy notice.' }),

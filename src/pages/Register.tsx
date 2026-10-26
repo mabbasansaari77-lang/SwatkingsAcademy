@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
-import { useState } from 'react';
+import { AlertCircle, Camera, CheckCircle2, Loader2, X } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { Link, useSearchParams } from 'react-router';
 import { Button, LinkButton } from '../components/ui/Button';
@@ -8,7 +8,8 @@ import { describedBy } from '../components/ui/aria';
 import { Field, Honeypot } from '../components/ui/Field';
 import { Container, PageHeader } from '../components/ui/Section';
 import { Seo } from '../components/ui/Seo';
-import { AGE_GROUPS, EXPERIENCE_LEVELS, SCHEDULES } from '../lib/labels';
+import { AGE_GROUPS, BATTING_STYLES, BOWLING_STYLES, EXPERIENCE_LEVELS, PLAYING_ROLES, SCHEDULES } from '../lib/labels';
+import { checkPhoto, MAX_REGISTRATION_PHOTOS } from '../lib/registrationPhotos';
 import { fetchProgrammes } from '../lib/queries';
 import { useSettings } from '../lib/settings';
 import { submitRegistration } from '../lib/submissions';
@@ -22,8 +23,8 @@ function Success({ reference }: { reference: string }) {
       <CheckCircle2 className="mx-auto h-14 w-14 text-sky-500" aria-hidden="true" />
       <h2 className="mt-4 text-4xl font-extrabold text-navy-900">Registration received</h2>
       <p className="mt-3 text-lg text-charcoal-600">
-        Thank you. Your application is now <strong>pending</strong>. The academy will contact you using the phone number
-        you provided.
+        Thank you. Your registration is now <strong>pending</strong>. Once the academy approves it, we will let you know
+        by WhatsApp, phone or email, and — if you agreed — the player’s profile will appear on our players page.
       </p>
       <p className="mt-6 text-charcoal-600">Your registration reference</p>
       <p className="scoreboard mx-auto mt-2 inline-block rounded px-5 py-2 font-display text-3xl font-black tracking-wider text-accent-300">
@@ -42,9 +43,95 @@ function Success({ reference }: { reference: string }) {
   );
 }
 
+function PhotoPicker({ photos, onChange }: { photos: File[]; onChange: (files: File[]) => void }) {
+  const [error, setError] = useState<string | null>(null);
+  const previews = useMemo(() => photos.map((f) => URL.createObjectURL(f)), [photos]);
+  useEffect(() => () => previews.forEach((u) => URL.revokeObjectURL(u)), [previews]);
+
+  const add = (list: FileList | null) => {
+    setError(null);
+    if (!list) return;
+    const next = [...photos];
+    for (const file of Array.from(list)) {
+      const problem = checkPhoto(file);
+      if (problem) {
+        setError(problem);
+        continue;
+      }
+      if (next.length >= MAX_REGISTRATION_PHOTOS) {
+        setError(`You can add up to ${MAX_REGISTRATION_PHOTOS} photos.`);
+        break;
+      }
+      next.push(file);
+    }
+    onChange(next);
+  };
+
+  return (
+    <div>
+      <p className="font-semibold">
+        Player photos <span className="font-normal text-charcoal-600">(optional, up to {MAX_REGISTRATION_PHOTOS})</span>
+      </p>
+      <p id="photos-hint" className="mt-1 text-sm text-charcoal-600">
+        The first photo is used as the profile picture — a clear, recent photo of the player, ideally in cricket
+        kit. Photos stay private until the academy accepts the registration.
+      </p>
+      <ul className="mt-3 flex flex-wrap gap-3">
+        {previews.map((src, i) => (
+          <li key={src} className="relative">
+            <img
+              src={src}
+              alt={i === 0 ? 'Profile photo preview' : `Photo ${i + 1} preview`}
+              className={`h-28 w-28 rounded-md object-cover ${i === 0 ? 'ring-4 ring-accent-500' : 'ring-1 ring-charcoal-400/40'}`}
+            />
+            {i === 0 && (
+              <span className="absolute bottom-1 left-1 rounded bg-navy-900/85 px-1.5 py-0.5 text-xs font-semibold text-white">
+                Profile
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={() => onChange(photos.filter((_, j) => j !== i))}
+              className="absolute -right-2 -top-2 rounded-full bg-white p-1 shadow ring-1 ring-charcoal-400/40 hover:bg-chalk"
+            >
+              <X className="h-4 w-4" aria-hidden="true" />
+              <span className="sr-only">Remove photo {i + 1}</span>
+            </button>
+          </li>
+        ))}
+        {photos.length < MAX_REGISTRATION_PHOTOS && (
+          <li>
+            <label className="flex h-28 w-28 cursor-pointer flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed border-navy-700/40 text-center text-sm font-semibold text-navy-800 hover:bg-navy-800/5 focus-within:ring-2 focus-within:ring-navy-700">
+              <Camera className="h-6 w-6" aria-hidden="true" />
+              Add photo
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                className="sr-only"
+                aria-describedby="photos-hint"
+                onChange={(e) => {
+                  add(e.target.files);
+                  e.target.value = '';
+                }}
+              />
+            </label>
+          </li>
+        )}
+      </ul>
+      {error && (
+        <p role="alert" className="mt-2 text-sm font-medium text-cherry">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
 function RegistrationForm({ onSuccess }: { onSuccess: (reference: string) => void }) {
   const [params] = useSearchParams();
   const [serverError, setServerError] = useState<string | null>(null);
+  const [photos, setPhotos] = useState<File[]>([]);
   const programmes = useAsync(async () => {
     if (!isSupabaseConfigured) return [];
     return (await fetchProgrammes()).filter((p) => p.status !== 'closed');
@@ -66,6 +153,12 @@ function RegistrationForm({ onSuccess }: { onSuccess: (reference: string) => voi
       programme_id: params.get('programme') ?? '',
       experience_details: '',
       additional_info: '',
+      playing_role: '',
+      batting_style: '',
+      bowling_style: '',
+      achievements: '',
+      about_player: '',
+      public_profile_consent: false,
       guardian_consent: false,
       website: '',
     },
@@ -77,7 +170,7 @@ function RegistrationForm({ onSuccess }: { onSuccess: (reference: string) => voi
   const onSubmit = async (data: RegistrationData) => {
     setServerError(null);
     try {
-      const reference = await submitRegistration(data);
+      const reference = await submitRegistration(data, photos);
       onSuccess(reference);
       window.scrollTo({ top: 0 });
     } catch (err) {
@@ -277,6 +370,103 @@ function RegistrationForm({ onSuccess }: { onSuccess: (reference: string) => voi
         </Field>
       </fieldset>
 
+      <fieldset className="space-y-5">
+        <legend className="mb-2 font-display text-3xl font-extrabold text-navy-900">Player profile</legend>
+        <p className="-mt-2 text-sm text-charcoal-600">
+          These details build the player’s profile on our players page once the registration is accepted (only if you
+          agree below). Please only include achievements that are true and can be confirmed.
+        </p>
+        <div className="grid gap-5 sm:grid-cols-3">
+          <Field id="playing_role" label="Main role" optional error={err('playing_role')}>
+            <select
+              id="playing_role"
+              className="field-input"
+              aria-invalid={Boolean(errors.playing_role)}
+              aria-describedby={describedBy('playing_role', err('playing_role'))}
+              {...register('playing_role')}
+            >
+              <option value="">
+                Not sure yet
+              </option>
+              {PLAYING_ROLES.map((x) => (
+                <option key={x.value} value={x.value}>
+                  {x.label}
+                </option>
+              ))}
+            </select>
+          </Field>
+          <Field id="batting_style" label="Batting" optional error={err('batting_style')}>
+            <select
+              id="batting_style"
+              className="field-input"
+              
+              aria-invalid={Boolean(errors.batting_style)}
+              aria-describedby={describedBy('batting_style', err('batting_style'))}
+              {...register('batting_style')}
+            >
+              <option value="">
+                Not sure
+              </option>
+              {BATTING_STYLES.map((x) => (
+                <option key={x.value} value={x.value}>
+                  {x.label}
+                </option>
+              ))}
+            </select>
+          </Field>
+          <Field id="bowling_style" label="Bowling" optional error={err('bowling_style')}>
+            <select
+              id="bowling_style"
+              className="field-input"
+              
+              aria-invalid={Boolean(errors.bowling_style)}
+              aria-describedby={describedBy('bowling_style', err('bowling_style'))}
+              {...register('bowling_style')}
+            >
+              <option value="">
+                Not sure
+              </option>
+              {BOWLING_STYLES.map((x) => (
+                <option key={x.value} value={x.value}>
+                  {x.label}
+                </option>
+              ))}
+            </select>
+          </Field>
+        </div>
+        <Field
+          id="achievements"
+          label="Cricket achievements"
+          optional
+          hint="For example: teams represented, tournaments played, awards. One per line."
+          error={err('achievements')}
+        >
+          <textarea
+            id="achievements"
+            rows={3}
+            className="field-input"
+            aria-describedby={describedBy('achievements', err('achievements'), true)}
+            {...register('achievements')}
+          />
+        </Field>
+        <Field
+          id="about_player"
+          label="About the player"
+          optional
+          hint="A few sentences: strengths, favourite position, goals in cricket."
+          error={err('about_player')}
+        >
+          <textarea
+            id="about_player"
+            rows={3}
+            className="field-input"
+            aria-describedby={describedBy('about_player', err('about_player'), true)}
+            {...register('about_player')}
+          />
+        </Field>
+        <PhotoPicker photos={photos} onChange={setPhotos} />
+      </fieldset>
+
       <fieldset className="space-y-4">
         <legend className="mb-2 font-display text-3xl font-extrabold text-navy-900">Consent</legend>
         {isMinor && (
@@ -301,6 +491,17 @@ function RegistrationForm({ onSuccess }: { onSuccess: (reference: string) => voi
             )}
           </div>
         )}
+        <div>
+          <label className="flex items-start gap-3">
+            <input type="checkbox" className="mt-1 h-5 w-5 accent-navy-800" {...register('public_profile_consent')} />
+            <span>
+              {isMinor ? 'As the parent or guardian, I agree' : 'I agree'} that if this registration is accepted, the
+              player’s name, photos and cricket details may be shown on the academy website. Phone, email and guardian
+              details are never shown. <span className="text-charcoal-600">(Optional — you can ask us to remove it
+              at any time.)</span>
+            </span>
+          </label>
+        </div>
         <div>
           <label className="flex items-start gap-3">
             <input
@@ -355,13 +556,13 @@ export default function Register() {
   return (
     <>
       <Seo
-        title="Register for Trials"
-        description="Register for cricket trials at Swat Kings Cricket Academy. Cricket training for beginners and youth players in Swat."
+        title="Player Registration"
+        description="Player registration for Swat Kings Cricket Academy in Swat. Register with your photo and cricket details; approved players appear on the academy players page."
       />
       <PageHeader
         page="register"
-        title="Register for trials"
-        intro="Tell us about the player and we will contact you with trial dates and the next steps. There is no payment online."
+        title="Player registration"
+        intro="Register as an academy player with your photo and cricket details. When the academy accepts your registration, we will notify you and your profile can appear on our players page. There is no payment online."
       />
       <Container className="max-w-3xl py-12">
         {reference ? (
@@ -371,7 +572,7 @@ export default function Register() {
             <h2 className="text-3xl font-extrabold text-navy-900">Registrations are closed for now</h2>
             <p className="mt-2 text-charcoal-600">
               We are not accepting new registrations at the moment. Send us a message and we will let you know when
-              trials open.
+              registrations open.
             </p>
             <LinkButton to="/contact" variant="navy" className="mt-5">
               Contact the academy

@@ -26,12 +26,15 @@ export default function Privacy() {
 
           <section>
             <h2>What we collect</h2>
-            <p>When you register for trials, we collect:</p>
+            <p>When you complete a player registration, we collect:</p>
             <ul className="mt-2">
               <li>the player’s name and age group (not their date of birth);</li>
               <li>a parent or guardian’s name for players under 19;</li>
               <li>a contact phone number and, if you choose, an email address;</li>
               <li>cricket experience, preferred programme and preferred schedule;</li>
+              <li>cricket details for a player profile: playing role, batting and bowling style, achievements and a short “about the player”;</li>
+              <li>up to three photos of the player, if you choose to upload them;</li>
+              <li>whether you agree to the player being shown on the academy website if accepted;</li>
               <li>any additional information you choose to give;</li>
               <li>confirmation of guardian consent and that you have read this policy.</li>
             </ul>
@@ -47,7 +50,7 @@ export default function Privacy() {
           <section>
             <h2>How we use it</h2>
             <ul>
-              <li>to review registrations and contact you about trials and training;</li>
+              <li>to review registrations and contact you about your registration and training;</li>
               <li>to reply to your messages;</li>
               <li>to keep the website safe from spam and abuse.</li>
             </ul>
@@ -58,7 +61,13 @@ export default function Privacy() {
             <h2>Who can see it</h2>
             <p>
               Registration details and messages are stored in a secure database and can only be viewed by authorised
-              academy administrators. They are never shown on the public website.
+              academy administrators. Contact details are never shown on the public website.
+            </p>
+            <p className="mt-3">
+              Uploaded photos are kept private until the registration is accepted. If the registration is accepted and
+              you agreed to a public profile, the player’s name, photos and cricket details (never phone, email or
+              guardian details) appear on our players page. If a registration is rejected, its photos are deleted. You
+              can ask us to remove a public profile at any time.
             </p>
           </section>
 

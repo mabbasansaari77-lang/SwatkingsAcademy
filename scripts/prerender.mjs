@@ -136,7 +136,7 @@ const link = (p) => (siteUrl ? `${siteUrl}${p}` : p);
 const lines = [
   `# ${settings.academy_name}`,
   '',
-  '> Cricket academy in Swat, Khyber Pakhtunkhwa, Pakistan, offering coaching for beginners, youth and developing cricketers. Players can register for trials online.',
+  '> Cricket academy in Swat, Khyber Pakhtunkhwa, Pakistan, offering coaching for beginners, youth and developing cricketers. Players can register online; approved players get a public profile with consent.',
   '',
 ];
 const contact = [
@@ -150,7 +150,7 @@ if (contact.length) lines.push('## Contact', '', ...contact, '');
 lines.push(
   '## Key pages',
   '',
-  `- [Register for trials](${link('/register')}): online registration form for players (parent or guardian consent for under-19s)`,
+  `- [Player registration](${link('/register')}): online player registration form with photo and cricket details (parent or guardian consent for under-19s)`,
   `- [Coaching programmes](${link('/programmes')}): programmes, age groups, schedules and availability`,
   `- [Coaches](${link('/coaches')})`,
   `- [Players and teams](${link('/teams')})`,

@@ -45,7 +45,7 @@ export function Header() {
         <div className="flex items-center gap-2">
           <span className="hidden sm:block">
             <LinkButton to="/register" variant="accent" size="sm" className="whitespace-nowrap">
-              Register for Trials
+              Player Registration
             </LinkButton>
           </span>
           <button
@@ -84,7 +84,7 @@ export function Header() {
             ))}
             <li className="pt-4 pb-2">
               <LinkButton to="/register" variant="accent" className="w-full" onClick={close}>
-                Register for Trials
+                Player Registration
               </LinkButton>
             </li>
           </ul>

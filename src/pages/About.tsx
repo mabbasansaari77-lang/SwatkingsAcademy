@@ -67,14 +67,14 @@ export default function About() {
       <Section tone="light">
         <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
           <p className="max-w-xl text-xl font-semibold text-charcoal-900">
-            Want to see how we train? Look through our programmes or register for a trial session.
+            Want to see how we train? Look through our programmes or complete a player registration.
           </p>
           <div className="flex flex-wrap gap-3">
             <LinkButton to="/programmes" variant="outline-dark">
               Explore Training
             </LinkButton>
             <LinkButton to="/register" variant="accent">
-              Register for Trials
+              Player Registration
             </LinkButton>
           </div>
         </div>

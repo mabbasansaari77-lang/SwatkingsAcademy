@@ -122,6 +122,18 @@ begin
     raise exception 'FAIL: anon can call enforce_rate_limit()';
   exception when insufficient_privilege then raise notice 'PASS: anon cannot call internal helper functions';
   end;
+
+  -- 1m. (migration 008) visitors cannot accept registrations or see uploaded photos
+  if to_regprocedure('public.accept_registration(uuid,text,text[])') is not null then
+    begin
+      perform public.accept_registration('00000000-0000-4000-8000-000000000000'::uuid);
+      raise exception 'FAIL: anon can call accept_registration()';
+    exception when insufficient_privilege then raise notice 'PASS: anon cannot accept registrations';
+    end;
+    perform 1 from storage.objects where bucket_id = 'registration-photos';
+    if found then raise exception 'FAIL: anon can list registration photos'; end if;
+    raise notice 'PASS: anon cannot see registration photos';
+  end if;
 end;
 $$;
 

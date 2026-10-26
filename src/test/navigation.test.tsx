@@ -30,7 +30,7 @@ describe('Public website', () => {
       screen.getByText('Develop your cricket skills, discipline, confidence, and teamwork with Swat Kings Cricket Academy.'),
     ).toBeInTheDocument();
     const hero = screen.getByRole('heading', { level: 1 }).closest('section')!;
-    expect(within(hero).getByRole('link', { name: 'Register for Trials' })).toHaveAttribute('href', '/register');
+    expect(within(hero).getByRole('link', { name: 'Player Registration' })).toHaveAttribute('href', '/register');
     expect(within(hero).getByRole('link', { name: 'Explore Training' })).toHaveAttribute('href', '/programmes');
   });
 
@@ -48,7 +48,7 @@ describe('Public website', () => {
     '/news': /news and announcements/i,
     '/gallery': /gallery/i,
     '/contact': /contact us/i,
-    '/register': /register for trials/i,
+    '/register': /player registration/i,
     '/privacy': /privacy policy/i,
   };
 

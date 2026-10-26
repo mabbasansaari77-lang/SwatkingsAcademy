@@ -1,13 +1,13 @@
-import { Download, Loader2, Search, X } from 'lucide-react';
+import { Download, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '../components/ui/Button';
 import { ErrorState, Loading } from '../components/ui/States';
 import { formatDateTime } from '../lib/format';
-import { AGE_GROUPS, EXPERIENCE_LEVELS, labelFor, REGISTRATION_STATUSES, SCHEDULES } from '../lib/labels';
+import { AGE_GROUPS, EXPERIENCE_LEVELS, labelFor, PLAYING_ROLES, REGISTRATION_STATUSES, SCHEDULES } from '../lib/labels';
 import { requireSupabase } from '../lib/supabase';
-import type { Registration, RegistrationStatus } from '../lib/types';
+import type { Registration } from '../lib/types';
 import { unwrap, useAsync } from '../lib/useAsync';
-import { friendlyDbError } from './errors';
+import { RegistrationReview } from './RegistrationReview';
 import { AdminPageHeader, NoticeBar, Panel, Pill, type Notice } from './ui';
 
 interface Filters {
@@ -31,13 +31,15 @@ function exportCsv(rows: Registration[]) {
   const header = [
     'Reference', 'Submitted', 'Status', 'Player', 'Guardian', 'Age group', 'Phone', 'Email', 'Programme',
     'Experience', 'Experience details', 'Schedule', 'Additional info', 'Guardian consent', 'Admin notes',
+    'Main role', 'Batting', 'Bowling', 'Achievements', 'About the player', 'Public profile consent', 'Photos',
   ];
   const lines = rows.map((r) =>
     [
       r.reference, formatDateTime(r.created_at), labelFor(REGISTRATION_STATUSES, r.status), r.player_name, r.guardian_name,
       labelFor(AGE_GROUPS, r.age_group), r.phone, r.email, r.programme?.name, labelFor(EXPERIENCE_LEVELS, r.experience_level),
       r.experience_details, labelFor(SCHEDULES, r.preferred_schedule), r.additional_info, r.guardian_consent ? 'Yes' : 'No',
-      r.admin_notes,
+      r.admin_notes, labelFor(PLAYING_ROLES, r.playing_role ?? ''), r.batting_style, r.bowling_style, r.achievements,
+      r.about_player, r.public_profile_consent ? 'Yes' : 'No', r.photo_paths?.length ?? 0,
     ]
       .map(csvEscape)
       .join(','),
@@ -49,108 +51,6 @@ function exportCsv(rows: Registration[]) {
   a.download = `registrations-${new Date().toISOString().slice(0, 10)}.csv`;
   a.click();
   URL.revokeObjectURL(url);
-}
-
-function Detail({ reg, onClose, onSaved }: { reg: Registration; onClose: () => void; onSaved: (text: string) => void }) {
-  const [status, setStatus] = useState<RegistrationStatus>(reg.status);
-  const [notes, setNotes] = useState(reg.admin_notes ?? '');
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const save = async () => {
-    setSaving(true);
-    setError(null);
-    const res = await requireSupabase()
-      .from('registrations')
-      .update({ status, admin_notes: notes.trim() || null })
-      .eq('id', reg.id)
-      .select('id');
-    setSaving(false);
-    if (res.error || !res.data?.length) {
-      setError(friendlyDbError(res.error?.message ?? 'permission denied'));
-      return;
-    }
-    onSaved(`Updated ${reg.reference} to ${labelFor(REGISTRATION_STATUSES, status)}.`);
-  };
-
-  const rows: [string, string | null][] = [
-    ['Reference', reg.reference],
-    ['Submitted', formatDateTime(reg.created_at)],
-    ['Player', reg.player_name],
-    ['Parent / guardian', reg.guardian_name],
-    ['Age group', labelFor(AGE_GROUPS, reg.age_group)],
-    ['Phone', reg.phone],
-    ['Email', reg.email],
-    ['Programme', reg.programme?.name ?? 'Not sure yet'],
-    ['Experience', labelFor(EXPERIENCE_LEVELS, reg.experience_level)],
-    ['Experience details', reg.experience_details],
-    ['Preferred schedule', labelFor(SCHEDULES, reg.preferred_schedule)],
-    ['Additional information', reg.additional_info],
-    ['Guardian consent', reg.guardian_consent ? 'Yes' : reg.age_group === 'adult' ? 'Not needed (adult)' : 'No'],
-  ];
-
-  return (
-    <Panel className="mb-6">
-      <div className="flex items-start justify-between gap-4">
-        <h2 className="text-2xl font-extrabold text-navy-900">{reg.player_name}</h2>
-        <button type="button" onClick={onClose} className="rounded p-1 hover:bg-chalk">
-          <X aria-hidden="true" />
-          <span className="sr-only">Close details</span>
-        </button>
-      </div>
-      <dl className="mt-4 grid gap-x-6 gap-y-3 sm:grid-cols-2">
-        {rows
-          .filter(([, v]) => v)
-          .map(([k, v]) => (
-            <div key={k}>
-              <dt className="text-sm text-charcoal-600">{k}</dt>
-              <dd className="whitespace-pre-line font-semibold break-words">
-                {k === 'Phone' ? (
-                  <a href={`tel:${v!.replace(/[^0-9+]/g, '')}`} className="underline underline-offset-4">
-                    {v}
-                  </a>
-                ) : k === 'Email' ? (
-                  <a href={`mailto:${v}`} className="underline underline-offset-4">
-                    {v}
-                  </a>
-                ) : (
-                  v
-                )}
-              </dd>
-            </div>
-          ))}
-      </dl>
-      <div className="mt-6 grid gap-4 border-t border-charcoal-400/20 pt-5 sm:grid-cols-[220px_1fr]">
-        <div>
-          <label htmlFor="reg-status" className="mb-1.5 block font-semibold">
-            Application status
-          </label>
-          <select id="reg-status" className="field-input" value={status} onChange={(e) => setStatus(e.target.value as RegistrationStatus)}>
-            {REGISTRATION_STATUSES.map((s) => (
-              <option key={s.value} value={s.value}>
-                {s.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="reg-notes" className="mb-1.5 block font-semibold">
-            Private admin notes
-          </label>
-          <textarea id="reg-notes" rows={3} maxLength={2000} className="field-input" value={notes} onChange={(e) => setNotes(e.target.value)} />
-        </div>
-      </div>
-      {error && <div className="mt-4"><NoticeBar notice={{ kind: 'error', text: error }} /></div>}
-      <div className="mt-4 flex gap-3">
-        <Button onClick={() => void save()} disabled={saving}>
-          {saving ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : null} Save
-        </Button>
-        <Button variant="ghost" onClick={onClose}>
-          Close
-        </Button>
-      </div>
-    </Panel>
-  );
 }
 
 export default function Registrations() {
@@ -192,7 +92,7 @@ export default function Registrations() {
     <div>
       <AdminPageHeader
         title="Registrations"
-        intro="Private applications from the registration form. Only admins can see these."
+        intro="Private player registrations. Open one to review photos and details, accept it to add the player to the players page, then notify them by WhatsApp, SMS or email."
         action={
           <Button variant="outline-dark" size="sm" disabled={!list.data?.length} onClick={() => list.data && exportCsv(list.data)}>
             <Download className="h-4 w-4" aria-hidden="true" /> Export to Excel (CSV)
@@ -201,12 +101,12 @@ export default function Registrations() {
       />
       <NoticeBar notice={notice} onDismiss={() => setNotice(null)} />
       {selected && (
-        <Detail
+        <RegistrationReview
           key={selected.id}
           reg={selected}
           onClose={() => setSelected(null)}
-          onSaved={(text) => {
-            setSelected(null);
+          onChanged={(text, close) => {
+            if (close) setSelected(null);
             setNotice({ kind: 'success', text });
             list.reload();
           }}

@@ -1,3 +1,4 @@
+import { uploadRegistrationPhoto } from './registrationPhotos';
 import { NotConfiguredError, requireSupabase } from './supabase';
 import type { ContactData, RegistrationData } from './validation';
 
@@ -25,8 +26,17 @@ function toFriendlyError(error: RpcError): SubmissionError {
   return new SubmissionError('Something went wrong while sending the form. Please try again in a few minutes.');
 }
 
-export async function submitRegistration(data: RegistrationData): Promise<string> {
-  const payload = { ...data };
+export async function submitRegistration(data: RegistrationData, photos: File[] = []): Promise<string> {
+  let photo_paths: string[] = [];
+  if (photos.length) {
+    try {
+      photo_paths = await Promise.all(photos.map((f) => uploadRegistrationPhoto(f)));
+    } catch (err) {
+      if (err instanceof NotConfiguredError) throw new SubmissionError(err.message);
+      throw new SubmissionError(err instanceof Error ? err.message : 'A photo could not be uploaded.');
+    }
+  }
+  const payload = { ...data, photo_paths };
   let res;
   try {
     res = await requireSupabase().rpc('submit_registration', { payload });

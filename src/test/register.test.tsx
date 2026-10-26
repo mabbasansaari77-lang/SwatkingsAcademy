@@ -88,6 +88,10 @@ describe('Registration form', () => {
     const user = userEvent.setup();
     renderPage();
     await fillAdult(user);
+    await user.selectOptions(screen.getByLabelText(/main role/i), 'all_rounder');
+    await user.selectOptions(screen.getByLabelText(/^batting/i), 'Left-hand bat');
+    await user.type(screen.getByLabelText(/cricket achievements/i), 'Club top scorer 2025');
+    await user.click(screen.getByLabelText(/may be shown on the academy website/i));
     await user.click(screen.getByRole('button', { name: /submit registration/i }));
 
     await waitFor(() => expect(submitRegistration).toHaveBeenCalledTimes(1));
@@ -99,6 +103,10 @@ describe('Registration form', () => {
       experience_level: 'club',
       preferred_schedule: 'weekends',
       privacy_acknowledged: true,
+      playing_role: 'all_rounder',
+      batting_style: 'Left-hand bat',
+      achievements: 'Club top scorer 2025',
+      public_profile_consent: true,
     });
     expect(payload).not.toHaveProperty('date_of_birth');
     expect(await screen.findByText('SK-2610-ABC123')).toBeInTheDocument();

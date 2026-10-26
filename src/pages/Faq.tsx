@@ -15,10 +15,10 @@ export default function Faq() {
     <>
       <Seo
         title="Frequently Asked Questions"
-        description="Answers to common questions about Swat Kings Cricket Academy: trials, age groups, training and how to register."
+        description="Answers to common questions about Swat Kings Cricket Academy: age groups, training and player registration."
       />
       {schema && <JsonLd data={schema} />}
-      <PageHeader title="Frequently asked questions" intro="Quick answers about trials, training and joining the academy." />
+      <PageHeader title="Frequently asked questions" intro="Quick answers about training, registration and joining the academy." />
       <Container className="max-w-3xl py-12">
         <AsyncBlock
           state={state}

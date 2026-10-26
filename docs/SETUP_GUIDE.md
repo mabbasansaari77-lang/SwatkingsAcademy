@@ -97,7 +97,7 @@ VITE_SITE_URL=
 
 Save, then run `npm run dev` again. If you ran the seed, the demo programmes now appear on the home page.
 
-**Test it:** go to **Register for Trials**, submit a test registration, and note the reference number. You'll see it in the admin dashboard after Part 3.
+**Test it:** go to **Player Registration**, submit a test registration, and note the reference number. You'll see it in the admin dashboard after Part 3.
 
 ---
 

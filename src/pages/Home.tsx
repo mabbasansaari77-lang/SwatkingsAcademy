@@ -51,7 +51,7 @@ function Hero() {
           </p>
           <div className="animate-rise mt-9 flex flex-wrap gap-3" style={{ animationDelay: '0.24s' }}>
             <LinkButton to="/register" variant="accent" size="lg">
-              Register for Trials
+              Player Registration
             </LinkButton>
             <LinkButton to="/programmes" variant="outline-light" size="lg">
               Explore Training
@@ -338,12 +338,12 @@ function RegisterCta() {
           </h2>
           <p className="mt-3 text-lg">
             {settings.registration_open
-              ? 'Register for trials online. It takes about three minutes and we will contact you with the next steps.'
-              : 'Registrations are closed at the moment. Send us a message and we will let you know when trials open.'}
+              ? 'Complete your player registration online with your photo and cricket details. Once the academy approves it, your profile appears on our players page.'
+              : 'Registrations are closed at the moment. Send us a message and we will let you know when registrations open.'}
           </p>
         </div>
         <LinkButton to={settings.registration_open ? '/register' : '/contact'} variant="navy" size="lg">
-          {settings.registration_open ? 'Register for Trials' : 'Contact the academy'}
+          {settings.registration_open ? 'Player Registration' : 'Contact the academy'}
         </LinkButton>
       </Container>
     </section>
@@ -403,7 +403,7 @@ export default function Home() {
     <>
       <Seo
         title="Swat Kings Cricket Academy"
-        description="Swat Kings Cricket Academy offers cricket coaching in Swat for beginners, youth and developing players. Register for trials and explore our training programmes."
+        description="Swat Kings Cricket Academy offers cricket coaching in Swat for beginners, youth and developing players. Register as a player and explore our training programmes."
       />
       <SiteSchema />
       <Hero />
