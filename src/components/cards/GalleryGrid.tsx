@@ -44,7 +44,7 @@ export function GalleryGrid({ items }: { items: MediaItem[] }) {
                 {thumb ? (
                   <img
                     src={thumb}
-                    alt={item.alt_text}
+                    alt={item.alt_text || 'Cricket training at Swat Kings Cricket Academy, Mingora, Swat'}
                     loading="lazy"
                     decoding="async"
                     width={400}
@@ -114,7 +114,7 @@ export function GalleryGrid({ items }: { items: MediaItem[] }) {
               ) : current.media_type === 'video' ? (
                 <video src={mediaUrl(current.storage_path) ?? undefined} controls className="max-h-[80vh] w-full" aria-label={current.alt_text} />
               ) : (
-                <img src={mediaUrl(current.storage_path) ?? undefined} alt={current.alt_text} className="max-h-[80vh] w-auto object-contain" />
+                <img src={mediaUrl(current.storage_path) ?? undefined} alt={current.alt_text || 'Cricket training at Swat Kings Cricket Academy, Mingora, Swat'} className="max-h-[80vh] w-auto object-contain" />
               )}
             </div>
             {(current.title || current.caption) && (

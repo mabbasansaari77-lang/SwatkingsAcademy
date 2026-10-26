@@ -556,12 +556,12 @@ export default function Register() {
   return (
     <>
       <Seo
-        title="Player Registration"
-        description="Cricket academy admission in Swat: register as a player at Swat Kings Cricket Academy, Mingora, with your photo and cricket details."
+        title="Cricket Trials and Player Registration in Swat"
+        description="How to join a cricket academy in Swat: register online for admission and cricket trials at Swat Kings Cricket Academy, Mingora, with your photo and cricket details."
       />
       <PageHeader
         page="register"
-        title="Player registration"
+        title="Player registration for admission and trials"
         intro="Register as an academy player with your photo and cricket details. When the academy accepts your registration, we will notify you and your profile can appear on our players page. There is no payment online."
       />
       <Container className="max-w-3xl py-12">

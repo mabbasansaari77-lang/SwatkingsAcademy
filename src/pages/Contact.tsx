@@ -107,12 +107,12 @@ export default function Contact() {
   return (
     <>
       <Seo
-        title="Contact Us"
-        description="Contact Swat Kings Cricket Academy in Takhtaband, Mingora, Swat about admission, fees, cricket coaching and training."
+        title="Contact Our Cricket Academy in Mingora, Swat"
+        description="Contact Swat Kings Cricket Academy in Takhtaband, Mingora, Swat about admission, fees, cricket trials, coaching and training times."
       />
       <OrgSchema />
       <PageHeader
-        page="contact" title="Contact us" intro="Questions about trials, programmes or training times? Send us a message." />
+        page="contact" title="Contact our cricket academy in Swat" intro="Questions about admission, fees, cricket trials, programmes or training times? Send us a message." />
       <Container className="grid gap-10 py-12 lg:grid-cols-[1.5fr_1fr]">
         <div>
           {sent ? (

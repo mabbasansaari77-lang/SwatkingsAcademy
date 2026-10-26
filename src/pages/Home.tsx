@@ -44,6 +44,9 @@ function Hero() {
             id="hero-heading"
             className="animate-rise text-[clamp(3.25rem,10vw,7.5rem)] font-black uppercase leading-[0.88] tracking-tight"
           >
+            <span className="mb-4 block font-sans text-base font-bold normal-case tracking-normal text-accent-300 sm:text-lg">
+              {settings.academy_name} · Cricket academy in Swat, Mingora
+            </span>
             {settings.hero_headline}
           </h1>
           <p className="animate-rise mt-6 max-w-xl text-lg text-crease/85 sm:text-xl" style={{ animationDelay: '0.12s' }}>
@@ -121,8 +124,8 @@ function Programmes() {
     <Section
       id="programmes"
       tone="chalk"
-      title="Coaching programmes"
-      intro="From first lessons to performance training, with specialist sessions for every discipline."
+      title="Cricket coaching programmes in Swat"
+      intro="From first lessons for kids to performance training for youth and adult cricketers, with specialist batting, bowling and fielding sessions."
       action={
         <LinkButton to="/programmes" variant="outline-dark" size="sm">
           All programmes
@@ -179,7 +182,7 @@ function Coaches() {
     <Section
       id="coaches"
       tone="light"
-      title="Meet the coaches"
+      title="Meet our cricket coaches"
       action={
         <LinkButton to="/coaches" variant="outline-dark" size="sm">
           All coaches
@@ -255,7 +258,7 @@ function GalleryPreview() {
     <Section
       id="gallery"
       tone="chalk"
-      title="From the nets"
+      title="Cricket training in Swat: from the nets"
       action={
         <LinkButton to="/gallery" variant="outline-dark" size="sm">
           Open the gallery
@@ -300,7 +303,7 @@ function Faqs() {
     <Section
       id="faq"
       tone="chalk"
-      title="Questions parents and players ask"
+      title="Cricket academy admission, fees and trials: your questions"
       action={
         state.data.length > 5 ? (
           <LinkButton to="/faq" variant="outline-dark" size="sm">
@@ -334,11 +337,11 @@ function RegisterCta() {
       <Container className="relative flex flex-col items-start gap-6 py-16 md:flex-row md:items-center md:justify-between">
         <div className="max-w-xl">
           <h2 id="cta-heading" className="text-4xl font-black uppercase sm:text-5xl">
-            Ready to take guard?
+            Ready to join a cricket academy in Swat?
           </h2>
           <p className="mt-3 text-lg">
             {settings.registration_open
-              ? 'Complete your player registration online with your photo and cricket details. Once the academy approves it, your profile appears on our players page.'
+              ? 'Want to join a cricket academy in Swat? Complete your player registration online with your photo and cricket details for admission and trials. Once the academy approves it, your profile appears on our players page.'
               : 'Registrations are closed at the moment. Send us a message and we will let you know when registrations open.'}
           </p>
         </div>
@@ -361,7 +364,7 @@ function ContactStrip() {
   ].filter(Boolean) as { icon: typeof MapPin; label: string; content: ReactNode }[];
 
   return (
-    <Section id="contact" tone="light" title="Visit or contact us">
+    <Section id="contact" tone="light" title="Visit our cricket academy in Mingora, Swat">
       <div className="grid gap-8 md:grid-cols-[1.5fr_1fr]">
         {items.length > 0 ? (
           <dl className="grid gap-6 sm:grid-cols-2">
@@ -403,7 +406,7 @@ export default function Home() {
     <>
       <Seo
         title="Swat Kings Cricket Academy"
-        description="Cricket academy in Mingora, Swat (Takhtaband). Cricket coaching and training for juniors, youth and adults. See admission, fees and player registration."
+        description="Cricket academy in Swat, Pakistan (Takhtaband, Mingora, KPK). Cricket coaching and training for kids, youth and adults. Admission, fees and trials registration online."
       />
       <SiteSchema />
       <Hero />

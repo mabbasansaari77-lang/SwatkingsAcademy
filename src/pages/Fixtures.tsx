@@ -25,7 +25,7 @@ export default function Fixtures() {
   return (
     <>
       <Seo
-        title="Fixtures and Results"
+        title="Cricket Matches, Fixtures and Results in Swat"
         description="Upcoming cricket matches and results for Swat Kings Cricket Academy teams in Swat, including tournaments, venues and scorecards."
       />
       {upcoming.data && fixtureSchemas(upcoming.data, settings.academy_name).length > 0 && (
@@ -33,7 +33,7 @@ export default function Fixtures() {
       )}
       <PageHeader
         page="fixtures"
-        title="Fixtures and results"
+        title="Cricket fixtures and results"
         intro="Match dates, venues and results entered by the academy after each game. Live scores are not available."
       />
       <Container className="py-12">

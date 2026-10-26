@@ -14,8 +14,14 @@ export function organizationSchema(s: SiteSettings): Record<string, unknown> {
     '@type': 'SportsOrganization',
     name: s.academy_name,
     sport: 'Cricket',
-    description: 'Cricket academy in Mingora, Swat (Takhtaband) offering cricket coaching and training for juniors, youth and adults.',
-    areaServed: { '@type': 'Place', name: 'Mingora, Swat, Khyber Pakhtunkhwa, Pakistan' },
+    alternateName: ['Swat Kings', 'Swat Kings Cricket Club'],
+    description: 'Cricket academy in Takhtaband, Mingora, Swat, Khyber Pakhtunkhwa, Pakistan, offering cricket coaching and training for kids, youth and adults.',
+    areaServed: [
+      { '@type': 'City', name: 'Mingora' },
+      { '@type': 'AdministrativeArea', name: 'Swat District, Khyber Pakhtunkhwa, Pakistan' },
+    ],
+    knowsAbout: ['Cricket coaching', 'Batting', 'Bowling', 'Wicketkeeping', 'Fielding', 'Junior cricket', 'Cricket trials'],
+    keywords: 'cricket academy in Swat, cricket academy Mingora, cricket coaching Swat, cricket trials Swat, cricket club Takhtaband, cricket academy KPK',
   };
   const url = absoluteUrl('/');
   if (url) {
@@ -23,7 +29,7 @@ export function organizationSchema(s: SiteSettings): Record<string, unknown> {
     data.logo = `${SITE_URL}/logo-512.png`;
     data['@id'] = `${SITE_URL}/#organization`;
   }
-  if (s.address) data.address = { '@type': 'PostalAddress', streetAddress: s.address, addressRegion: 'Swat', addressCountry: 'PK' };
+  if (s.address) data.address = { '@type': 'PostalAddress', streetAddress: s.address, addressLocality: 'Mingora', addressRegion: 'Khyber Pakhtunkhwa', addressCountry: 'PK' };
   if (s.phone) data.telephone = s.phone;
   if (s.email) data.email = s.email;
   if (sameAs.length) data.sameAs = sameAs;

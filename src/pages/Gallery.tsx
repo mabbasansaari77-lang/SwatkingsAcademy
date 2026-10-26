@@ -15,11 +15,11 @@ export default function Gallery() {
   return (
     <>
       <Seo
-        title="Photo and Video Gallery"
+        title="Cricket Training Photos and Videos"
         description="Photos and videos of cricket training, matches and events at Swat Kings Cricket Academy, Takhtaband, Mingora, Swat."
       />
       <PageHeader
-        page="gallery" title="Gallery" intro="Photos and videos from training, matches and academy events." />
+        page="gallery" title="Cricket gallery" intro="Photos and videos from cricket training, matches and academy events in Swat." />
       <Container className="py-12">
         <AsyncBlock
           state={state}

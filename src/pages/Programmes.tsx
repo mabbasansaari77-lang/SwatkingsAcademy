@@ -26,11 +26,11 @@ export default function Programmes() {
     <>
       <Seo
         title="Cricket Coaching Programmes in Swat"
-        description="Cricket coaching and cricket training in Swat: junior and youth cricket coaching, batting, bowling, wicketkeeping, fielding and fitness at our Mingora academy."
+        description="Cricket coaching and cricket training in Swat for kids, youth and adults: batting, bowling, wicketkeeping, fielding and fitness at our cricket academy in Mingora."
       />
       <PageHeader
         page="programmes"
-        title="Coaching programmes"
+        title="Cricket coaching programmes in Swat"
         intro="Choose a programme that matches the player’s level, or focus on a specific skill. Every programme lists its age group, schedule and availability."
       />
       <Container className="py-12">

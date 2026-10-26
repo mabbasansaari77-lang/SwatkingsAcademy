@@ -15,11 +15,11 @@ export default function News() {
   return (
     <>
       <Seo
-        title="News and Announcements"
-        description="Latest news, admissions and training announcements from Swat Kings Cricket Academy, the cricket academy in Mingora, Swat."
+        title="Cricket Trials, Admissions and News"
+        description="Cricket trials, admission dates and training news from Swat Kings Cricket Academy, the cricket academy in Mingora, Swat, Khyber Pakhtunkhwa."
       />
       <PageHeader
-        page="news" title="News and announcements" intro="Trial dates, training updates and academy news." />
+        page="news" title="Cricket trials and academy news" intro="Cricket trial dates, admissions, training updates and academy news from Swat." />
       <Container className="py-12">
         <AsyncBlock
           state={state}
