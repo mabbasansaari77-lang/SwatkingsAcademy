@@ -1,9 +1,13 @@
 import { useCallback, useRef } from 'react';
 
-/** True when the browser can animate and the visitor has not asked for reduced motion. */
+/** True in a browser that can run scroll animations (gentle ones also run under reduced motion; CSS tones them down). */
 export function canAnimate(): boolean {
-  if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') return false;
-  return !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  return typeof window !== 'undefined' && typeof IntersectionObserver !== 'undefined';
+}
+
+/** True when the visitor's device asks for less motion. */
+export function prefersReducedMotion(): boolean {
+  return typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 }
 
 /**

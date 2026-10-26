@@ -121,7 +121,8 @@ export function HeroArt() {
       </div>
 
       {/* Rotating HUD rings on the right */}
-      <div className="absolute right-[-12rem] top-1/2 hidden h-[36rem] w-[36rem] -translate-y-1/2 md:block lg:right-[-6rem]">
+      <div className="absolute right-[-9rem] top-[38%] block sm:top-1/2 h-[22rem] w-[22rem] -translate-y-1/2 opacity-60 sm:block md:right-[-12rem] md:h-[36rem] md:w-[36rem] md:opacity-100 lg:right-[-6rem]">
+        <div className="parallax h-full w-full" style={{ ['--depth' as string]: '28px' }}>
         <svg viewBox="0 0 400 400" className="animate-spin-slow h-full w-full" fill="none">
           <circle cx="200" cy="200" r="196" stroke="#38bdf8" strokeOpacity="0.25" strokeWidth="1" />
           <circle cx="200" cy="200" r="170" stroke="#7dd3fc" strokeOpacity="0.5" strokeWidth="2" strokeDasharray="2 10" />
@@ -131,7 +132,82 @@ export function HeroArt() {
         <svg viewBox="0 0 400 400" className="absolute inset-[18%] h-[64%] w-[64%] animate-[spin-slow_26s_linear_infinite_reverse]" fill="none">
           <circle cx="200" cy="200" r="190" stroke="#a5f3fc" strokeOpacity="0.35" strokeWidth="2" strokeDasharray="40 18" />
         </svg>
+        </div>
       </div>
+    </div>
+  );
+}
+
+// Fixed positions so the server and browser render the same particles
+const PARTICLES = Array.from({ length: 26 }, (_, i) => ({
+  left: (i * 37 + 11) % 100,
+  size: 2 + ((i * 7) % 4),
+  duration: 9 + ((i * 5) % 9),
+  delay: -((i * 13) % 17),
+}));
+
+function CricketBall({ size = 56 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 40">
+      <defs>
+        <radialGradient id="ball-shade" cx="0.35" cy="0.3" r="0.75">
+          <stop offset="0" stopColor="#ef4444" />
+          <stop offset="0.6" stopColor="#b3262b" />
+          <stop offset="1" stopColor="#6b1114" />
+        </radialGradient>
+      </defs>
+      <circle cx="20" cy="20" r="18" fill="url(#ball-shade)" />
+      <path d="M8 8 Q20 20 8 32 M32 8 Q20 20 32 32" stroke="#fde68a" strokeWidth="1.6" fill="none" strokeDasharray="2 2" />
+      <path d="M10 7 Q22 20 10 33 M30 7 Q18 20 30 33" stroke="#f4f6f1" strokeWidth="1" fill="none" opacity="0.8" />
+    </svg>
+  );
+}
+
+/**
+ * Motion layer over the hero (works over the illustration or a banner
+ * photo): drifting aurora lights, rising particles, a scanning light band
+ * and a cricket ball flying across in an arc with a glowing trail.
+ * Decorative only.
+ */
+export function HeroMotion() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div className="aurora parallax left-[-10%] top-[5%] h-[28rem] w-[28rem] bg-sky-500" style={{ ['--depth' as string]: '-30px' }} />
+      <div
+        className="aurora parallax right-[-8%] top-[30%] h-[24rem] w-[24rem] bg-cyan-400"
+        style={{ animationDelay: '-6s', ['--depth' as string]: '-45px' }}
+      />
+      <div className="aurora bottom-[-15%] left-[30%] h-[22rem] w-[30rem] bg-blue-600" style={{ animationDelay: '-11s' }} />
+      <div className="scanline" />
+      {PARTICLES.map((p, i) => (
+        <span
+          key={i}
+          className="particle"
+          style={{
+            left: `${p.left}%`,
+            width: p.size,
+            height: p.size,
+            animationDuration: `${p.duration}s`,
+            animationDelay: `${p.delay}s`,
+          }}
+        />
+      ))}
+      {[3, 2, 1].map((g) => (
+        <span key={g} className={`ball-flight ball-ghost-${g}`}>
+          <span>
+            <span>
+              <span className="block h-14 w-14 rounded-full bg-neon/80 blur-md" />
+            </span>
+          </span>
+        </span>
+      ))}
+      <span className="ball-flight">
+        <span>
+          <span className="drop-shadow-[0_0_18px_rgb(56_189_248/0.95)]">
+            <CricketBall />
+          </span>
+        </span>
+      </span>
     </div>
   );
 }

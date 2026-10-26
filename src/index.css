@@ -99,6 +99,55 @@
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+/* Flying cricket ball: X moves steadily while Y eases up then down,
+   which together draw a smooth arc across the hero. */
+@keyframes ball-x {
+  from { transform: translateX(-12vw); }
+  to { transform: translateX(112vw); }
+}
+@keyframes ball-y {
+  0% { transform: translateY(72vh); animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1); }
+  50% { transform: translateY(14vh); animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4); }
+  100% { transform: translateY(78vh); }
+}
+@keyframes ball-spin {
+  to { transform: rotate(1080deg); }
+}
+@keyframes particle-rise {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  12% { opacity: 0.95; }
+  80% { opacity: 0.7; }
+  100% { transform: translateY(-105vh) scale(1.1); opacity: 0; }
+}
+@keyframes aurora {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(8vw, -6vh) scale(1.25); }
+  100% { transform: translate(-6vw, 5vh) scale(0.95); }
+}
+@keyframes word-rise {
+  from { opacity: 0; transform: translateY(0.45em) scale(0.96); filter: blur(10px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes word-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes holo-pan {
+  from { background-position: 0% 50%; }
+  to { background-position: 200% 50%; }
+}
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+@keyframes border-spin {
+  to { --border-angle: 360deg; }
+}
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
 @keyframes scroll-progress {
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
@@ -335,7 +384,7 @@
   .marquee-track {
     display: flex;
     width: max-content;
-    animation: marquee 38s linear infinite;
+    animation: marquee 26s linear infinite;
   }
   .marquee:hover .marquee-track { animation-play-state: paused; }
 
@@ -349,12 +398,86 @@
     animation: gradient-pan 12s ease infinite;
   }
 
+  /* Flying ball wrappers (see ball-x / ball-y) */
+  .ball-flight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: ball-x 7s linear infinite;
+  }
+  .ball-flight > span {
+    display: block;
+    animation: ball-y 7s infinite;
+  }
+  .ball-flight > span > span {
+    display: block;
+    animation: ball-spin 7s linear infinite;
+  }
+  .ball-ghost-1, .ball-ghost-1 > span, .ball-ghost-1 > span > span { animation-delay: 0.07s !important; }
+  .ball-ghost-2, .ball-ghost-2 > span, .ball-ghost-2 > span > span { animation-delay: 0.14s !important; }
+  .ball-ghost-3, .ball-ghost-3 > span, .ball-ghost-3 > span > span { animation-delay: 0.21s !important; }
+  .ball-ghost-1 { opacity: 0.45; }
+  .ball-ghost-2 { opacity: 0.25; }
+  .ball-ghost-3 { opacity: 0.12; }
+
+  .particle {
+    position: absolute;
+    bottom: -12px;
+    border-radius: 9999px;
+    background: #bae6fd;
+    box-shadow: 0 0 10px 2px rgb(56 189 248 / 0.8);
+    animation: particle-rise linear infinite;
+  }
+
+  .aurora {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(70px);
+    opacity: 0.55;
+    animation: aurora 16s ease-in-out infinite alternate;
+  }
+
+  /* A light band that scans down the hero */
+  .scanline {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 140px;
+    background: linear-gradient(to bottom, transparent, rgb(125 211 252 / 0.09), transparent);
+    animation: scan 6s linear infinite;
+    pointer-events: none;
+  }
+
+  /* Headline words: rise in one by one, then keep a moving shine */
+  .word-in {
+    display: inline-block;
+    background: linear-gradient(100deg, #ffffff 0%, #e0f2fe 25%, #7dd3fc 45%, #ffffff 60%, #38bdf8 80%, #ffffff 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: word-rise 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) both, holo-pan 5s linear infinite;
+  }
+
+  /* Rotating neon border, used on the stats cards and hero badge */
+  .border-spin {
+    border: 1.5px solid transparent !important;
+    background:
+      linear-gradient(var(--spin-bg, #fff), var(--spin-bg, #fff)) padding-box,
+      conic-gradient(from var(--border-angle), rgb(56 189 248 / 0.15) 0 55%, #38bdf8 75%, #a5f3fc 85%, rgb(56 189 248 / 0.15) 100%) border-box !important;
+    animation: border-spin 4s linear infinite;
+  }
+
+  .parallax {
+    transform: translate3d(calc(var(--px, 0) * var(--depth, 20px)), calc(var(--py, 0) * var(--depth, 20px)), 0);
+    transition: transform 0.25s ease-out;
+  }
+
   /* Scroll reveal. JavaScript adds .reveal only to sections that start
      below the screen, so pre-rendered HTML and no-JS visitors always see
      everything. */
   .reveal {
     opacity: 0;
-    transform: translateY(32px);
+    transform: translateY(60px);
     transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
   }
   .reveal.reveal-in { opacity: 1; transform: none; }
@@ -383,18 +506,26 @@
   }
 }
 
-/* Respect reduced-motion preferences everywhere */
+/* Reduced motion: visitors whose device asks for less motion still get
+   gentle effects (fades, glows, twinkling lights, slow particles), but
+   everything that moves across the screen, spins or zooms is switched off. */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    animation-delay: 0ms !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  html { scroll-behavior: auto; }
+  .animate-delivery,
+  .animate-spin-slow,
+  .animate-grid-flow,
+  .animate-float,
+  .ball-flight,
+  .ball-flight * {
+    animation: none !important;
   }
-  .marquee-track { animation: none !important; }
+  .ball-flight { display: none; }
+  .marquee-track { animation-duration: 90s; }
+  .particle { animation-duration: 24s !important; }
+  .word-in { animation-name: word-fade, holo-pan !important; }
   .reveal,
-  .reveal ul > li { opacity: 1 !important; transform: none !important; }
+  .reveal ul > li { transform: none !important; }
+  .card-tech:hover,
+  .card-glass:hover { transform: none; }
+  .parallax { transform: none !important; }
 }
