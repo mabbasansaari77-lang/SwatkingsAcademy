@@ -99,20 +99,6 @@
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-/* Flying cricket ball: X moves steadily while Y eases up then down,
-   which together draw a smooth arc across the hero. */
-@keyframes ball-x {
-  from { transform: translateX(-12vw); }
-  to { transform: translateX(112vw); }
-}
-@keyframes ball-y {
-  0% { transform: translateY(72vh); animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1); }
-  50% { transform: translateY(14vh); animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4); }
-  100% { transform: translateY(78vh); }
-}
-@keyframes ball-spin {
-  to { transform: rotate(1080deg); }
-}
 @keyframes particle-rise {
   0% { transform: translateY(0) scale(0.6); opacity: 0; }
   12% { opacity: 0.95; }
@@ -398,28 +384,6 @@
     animation: gradient-pan 12s ease infinite;
   }
 
-  /* Flying ball wrappers (see ball-x / ball-y) */
-  .ball-flight {
-    position: absolute;
-    top: 0;
-    left: 0;
-    animation: ball-x 7s linear infinite;
-  }
-  .ball-flight > span {
-    display: block;
-    animation: ball-y 7s infinite;
-  }
-  .ball-flight > span > span {
-    display: block;
-    animation: ball-spin 7s linear infinite;
-  }
-  .ball-ghost-1, .ball-ghost-1 > span, .ball-ghost-1 > span > span { animation-delay: 0.07s !important; }
-  .ball-ghost-2, .ball-ghost-2 > span, .ball-ghost-2 > span > span { animation-delay: 0.14s !important; }
-  .ball-ghost-3, .ball-ghost-3 > span, .ball-ghost-3 > span > span { animation-delay: 0.21s !important; }
-  .ball-ghost-1 { opacity: 0.45; }
-  .ball-ghost-2 { opacity: 0.25; }
-  .ball-ghost-3 { opacity: 0.12; }
-
   .particle {
     position: absolute;
     bottom: -12px;
@@ -514,12 +478,9 @@
   .animate-delivery,
   .animate-spin-slow,
   .animate-grid-flow,
-  .animate-float,
-  .ball-flight,
-  .ball-flight * {
+  .animate-float {
     animation: none !important;
   }
-  .ball-flight { display: none; }
   .marquee-track { animation-duration: 90s; }
   .particle { animation-duration: 24s !important; }
   .word-in { animation-name: word-fade, holo-pan !important; }

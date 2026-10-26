@@ -146,27 +146,9 @@ const PARTICLES = Array.from({ length: 26 }, (_, i) => ({
   delay: -((i * 13) % 17),
 }));
 
-function CricketBall({ size = 56 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 40 40">
-      <defs>
-        <radialGradient id="ball-shade" cx="0.35" cy="0.3" r="0.75">
-          <stop offset="0" stopColor="#ef4444" />
-          <stop offset="0.6" stopColor="#b3262b" />
-          <stop offset="1" stopColor="#6b1114" />
-        </radialGradient>
-      </defs>
-      <circle cx="20" cy="20" r="18" fill="url(#ball-shade)" />
-      <path d="M8 8 Q20 20 8 32 M32 8 Q20 20 32 32" stroke="#fde68a" strokeWidth="1.6" fill="none" strokeDasharray="2 2" />
-      <path d="M10 7 Q22 20 10 33 M30 7 Q18 20 30 33" stroke="#f4f6f1" strokeWidth="1" fill="none" opacity="0.8" />
-    </svg>
-  );
-}
-
 /**
  * Motion layer over the hero (works over the illustration or a banner
- * photo): drifting aurora lights, rising particles, a scanning light band
- * and a cricket ball flying across in an arc with a glowing trail.
+ * photo): drifting aurora lights, rising particles, and a scanning light band.
  * Decorative only.
  */
 export function HeroMotion() {
@@ -192,22 +174,6 @@ export function HeroMotion() {
           }}
         />
       ))}
-      {[3, 2, 1].map((g) => (
-        <span key={g} className={`ball-flight ball-ghost-${g}`}>
-          <span>
-            <span>
-              <span className="block h-14 w-14 rounded-full bg-neon/80 blur-md" />
-            </span>
-          </span>
-        </span>
-      ))}
-      <span className="ball-flight">
-        <span>
-          <span className="drop-shadow-[0_0_18px_rgb(56_189_248/0.95)]">
-            <CricketBall />
-          </span>
-        </span>
-      </span>
     </div>
   );
 }
