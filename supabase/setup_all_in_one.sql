@@ -1464,7 +1464,7 @@ begin
     raise exception 'Please write a comment (10–1500 characters).' using errcode = '22023';
   end if;
   -- Links are the usual sign of spam; genuine reviews do not need them.
-  if v_comment ~* '(https?://|www\.|\.com\b|\.net\b|\.xyz\b)' or v_name ~* '(https?://|www\.)' then
+  if v_comment ~* '(https?://|www\.|\.com\y|\.net\y|\.xyz\y)' or v_name ~* '(https?://|www\.)' then
     raise exception 'Please remove web links from your review.' using errcode = '22023';
   end if;
   if exists (
