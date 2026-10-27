@@ -18,8 +18,8 @@ interface SectionProps {
 }
 
 const tones = {
-  light: 'bg-crease text-charcoal-900',
-  chalk: 'bg-chalk text-charcoal-900',
+  light: 'on-sky bg-skybg text-charcoal-900',
+  chalk: 'on-sky bg-skybg-soft text-charcoal-900',
   dark: 'tech-surface text-crease',
 };
 

@@ -22,14 +22,17 @@
   --color-charcoal-950: #12161a;
   --color-charcoal-900: #1c2229;
   --color-charcoal-800: #2a323b;
-  --color-charcoal-600: #4b5563;
+  --color-charcoal-600: #374151;
   --color-charcoal-400: #7b8794;
   --color-crease: #f0f9ff;
   --color-chalk: #e0f2fe;
   --color-accent-300: #bae6fd;
   --color-accent-500: #7dd3fc;
-  --color-accent-700: #0369a1;
+  --color-accent-700: #0c4a6e;
   --color-cherry: #b3262b;
+  /* Sky blue page backgrounds (light sections and the page itself) */
+  --color-skybg: #87ceeb;
+  --color-skybg-soft: #a8dcf2;
   /* Futuristic theme: deep "night stadium" blues and a neon sky-blue glow */
   --color-space-950: #020c1b;
   --color-space-900: #04182f;
@@ -139,13 +142,18 @@
   to { transform: scaleX(1); }
 }
 
+/* Darker blue for text links on the sky blue sections, so they stay readable */
+.on-sky :is(.text-navy-700, .text-navy-800, .text-navy-900):not(:hover, .bg-white *, [class^='bg-navy'], [class*=' bg-navy'], [class^='bg-navy'] *, [class*=' bg-navy'] *) {
+  color: #0c4a6e;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
   body {
-    background: var(--color-crease);
+    background: var(--color-skybg);
     color: var(--color-charcoal-900);
     font-family: var(--font-sans);
     font-size: 1.0625rem;
